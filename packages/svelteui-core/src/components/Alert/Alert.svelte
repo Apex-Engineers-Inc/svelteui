@@ -7,7 +7,7 @@
 
 	let {
 		use = [],
-		element = undefined,
+		element = $bindable(null),
 		className = 'blue',
 		override = {},
 		title = undefined,

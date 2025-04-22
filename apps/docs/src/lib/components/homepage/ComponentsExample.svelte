@@ -50,7 +50,7 @@
 
 	let value = $state(0),
 		modalOpened = $state(false),
-		reference: HTMLButtonElement | undefined = $state(),
+		reference: HTMLButtonElement | null = $state(null),
 		popperMounted = $state(false),
 		monthValue = $state(new Date()),
 		windowWidth = $state(0);

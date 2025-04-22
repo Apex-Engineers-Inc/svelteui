@@ -21,7 +21,7 @@
 		id = randomID('textarea'),
 		labelElement = 'label',
 		showRightSection = undefined,
-		value = $bindable(null),
+		value = $bindable(),
 		placeholder = '',
 		rightSection,
 		...rest

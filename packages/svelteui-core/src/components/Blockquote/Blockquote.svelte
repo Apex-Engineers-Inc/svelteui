@@ -6,7 +6,7 @@
 	import { IconRenderer } from '../IconRenderer';
 
 	let {
-		element = undefined,
+		element = $bindable(null),
 		className = '',
 		override = {},
 		root = 'blockquote',

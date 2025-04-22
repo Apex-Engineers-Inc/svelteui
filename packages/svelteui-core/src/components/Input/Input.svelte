@@ -23,7 +23,7 @@
 		variant = 'default',
 		disabled = false,
 		size = 'sm',
-		value = $bindable(null),
+		value = $bindable(),
 		invalid = false,
 		multiline = false,
 		autocomplete = 'on',
@@ -48,15 +48,6 @@
 	function isInput(root: string): root is Input {
 		return ['input', 'select', 'textarea', 'datalist'].includes(root);
 	}
-
-	// @TODO
-	// Slot forwarding and conditional slots will be reworked for Svelte 5. This is waiting
-	// for that fix, since currently setting a slot and then checking for $$slot.icon
-	// for the `withIcon` class won't work.
-	// Discussion here: https://github.com/sveltejs/svelte/pull/8304 and
-	// https://github.com/sveltejs/svelte/issues/8765
-	let iconElement: HTMLElement;
-	let isIconSlotUsed = Boolean(iconElement?.innerHTML);
 
 	function onChange() {
 		// the 'this' keyword in this case is the
@@ -118,7 +109,7 @@
 				{
 					[classes.disabled]: disabled,
 					[classes.invalid]: invalid,
-					[classes.withIcon]: icon || iconComponent || isIconSlotUsed
+					[classes.withIcon]: icon || iconComponent
 				},
 				classes[`${variant}Variant`] ?? {}
 			)}
@@ -126,8 +117,6 @@
 			oninput={onInput}
 		/>
 	{:else if isHTMLElement && isInput(String(root))}
-		<!-- on:change needs to appear before use:forwardEvents so that the
-   		ordering of the events is correct and the value is updated before propagation -->
 		<!-- prettier-ignore -->
 		<!-- svelte-ignore a11y_autofocus -->
 		<svelte:element
@@ -150,7 +139,7 @@
 				{
 					[classes.disabled]: disabled,
 					[classes.invalid]: invalid,
-					[classes.withIcon]: icon || isIconSlotUsed
+					[classes.withIcon]: icon
 				},
 				classes[`${variant}Variant`] ?? {}
 			)}
@@ -174,7 +163,7 @@
 				{
 					[classes.disabled]: disabled,
 					[classes.invalid]: invalid,
-					[classes.withIcon]: icon || iconComponent || isIconSlotUsed
+					[classes.withIcon]: icon || iconComponent
 				},
 				classes[`${variant}Variant`] ?? {}
 			)}

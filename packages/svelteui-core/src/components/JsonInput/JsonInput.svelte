@@ -11,7 +11,7 @@
 		validationError = null,
 		onBlur = undefined,
 		readOnly = undefined,
-		value = undefined,
+		value = $bindable(),
 		rows = 4,
 		serialize = JSON.stringify,
 		deserialize = JSON.parse,
