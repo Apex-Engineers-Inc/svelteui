@@ -15,12 +15,13 @@
 	// Verifies if CSR only elements are defined, or else it won't use them
 	const requiresShim = typeof HTMLElement === 'undefined' && typeof SVGElement === 'undefined';
 
-	let { cx, getStyles, classes } = $derived(useStyles({ iconSize }, { name: 'IconRenderer' }));
 	onMount(() => {
 		if (!requiresShim && (icon instanceof HTMLElement || icon instanceof SVGElement)) {
 			icon.classList.add(...classes.icon.split(' '));
 		}
 	});
+
+	let { cx, getStyles, classes } = $derived(useStyles({ iconSize }, { name: 'IconRenderer' }));
 </script>
 
 {#if typeof icon === 'function'}

@@ -36,7 +36,7 @@
 	bind:element
 	role="alert"
 	class={cx(className, classes.root, {
-		withIcon: icon,
+		withIcon: icon || iconComponent,
 		withLoader: loading
 	})}
 	{...rest}
