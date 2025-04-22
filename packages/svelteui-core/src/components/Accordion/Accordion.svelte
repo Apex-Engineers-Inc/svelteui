@@ -50,13 +50,15 @@
 
 	function updateActive(itemValue: string) {
 		if (!multiple) {
-			value = (value === itemValue ? undefined : itemValue) as AccordionValue<Multiple>;
+			value = (
+				context.currentValue === itemValue ? undefined : itemValue
+			) as AccordionValue<Multiple>;
 
 			onchange(value);
 			return;
 		}
 
-		let values = (value || []) as string[];
+		let values = (context.currentValue || []) as string[];
 		if (values.includes(itemValue)) {
 			values = values.filter((v) => v !== itemValue);
 		} else {
@@ -67,7 +69,9 @@
 	}
 
 	function isItemActive(itemValue: string) {
-		return multiple ? value?.includes(itemValue) : value === itemValue;
+		return multiple
+			? context.currentValue?.includes(itemValue)
+			: context.currentValue === itemValue;
 	}
 
 	function getControlsId(itemValue: string) {

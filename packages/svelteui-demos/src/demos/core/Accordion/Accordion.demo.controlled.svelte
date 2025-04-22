@@ -7,7 +7,7 @@
   let value = $state('typescript');
 <\/script>
 
-<Accordion {value} {(currentValue) => (value = currentValue)}>
+<Accordion {value} onchange={(currentValue) => (value = currentValue)}>
   <Accordion.Item value="typescript">
     {#snippet control()}
 		<div>Typescript Based</div>
