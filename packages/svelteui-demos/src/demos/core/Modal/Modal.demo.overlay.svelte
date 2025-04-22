@@ -3,10 +3,10 @@
 	const code = `
 <script>
     import { Modal, useSvelteUITheme } from '@svelteuidev/core';
-    
+
     const theme = useSvelteUITheme();
 <\/script>
-    
+
 <Modal
     overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
     overlayOpacity={0.55}
@@ -31,7 +31,7 @@
 </script>
 
 <ModalForm
-	opened
+	opened={false}
 	overlayColor={theme.colors['gray200'].value}
 	overlayOpacity={0.55}
 	overlayBlur={3}
