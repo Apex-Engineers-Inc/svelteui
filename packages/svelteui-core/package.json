@@ -17,8 +17,7 @@
 	"homepage": "https://svelteui.dev",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/svelteuidev/svelteui",
-		"directory": "packages/svelteui-core"
+		"url": "https://github.com/Apex-Engineers-Inc/svelteui-core"
 	},
 	"license": "MIT",
 	"author": "Kamell Perry <kamellperry33@gmail.com>",
