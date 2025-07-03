@@ -27,12 +27,12 @@
 	onMount(() => {
 		recentSearches = JSON.parse(localStorage.getItem('recentSearches') ?? '[]') || [];
 		const colorSchemeValue = localStorage.getItem('colorScheme');
-		if (colorSchemeValue) $colorScheme = colorSchemeValue as ColorScheme;
+		if (colorSchemeValue) globalThis.$colorScheme = colorSchemeValue as ColorScheme;
 	});
 
 	function toggleTheme() {
 		colorScheme.update((v) => (v === 'light' ? 'dark' : 'light'));
-		localStorage.setItem('colorScheme', $colorScheme);
+		localStorage.setItem('colorScheme', globalThis.$colorScheme);
 	}
 
 	function changeModalState() {
@@ -102,7 +102,7 @@
 		<Menu.Label>Experimental Theme Toggle</Menu.Label>
 		<Menu.Item>
 			<ActionIcon variant="outline" on:click={toggleTheme} size={30}>
-				{#if $colorScheme === 'dark'}
+				{#if globalThis.$colorScheme === 'dark'}
 					<Moon />
 				{:else}
 					<Sun />
@@ -152,7 +152,7 @@
 		<li>
 			<Tooltip withArrow labelComponent="Toggle Theme">
 				<ActionIcon size="lg" variant="outline" on:click={toggleTheme} radius="md">
-					{#if $colorScheme === 'light'}
+					{#if globalThis.$colorScheme === 'light'}
 						<Moon size={20} />
 					{:else}
 						<Sun size={20} />

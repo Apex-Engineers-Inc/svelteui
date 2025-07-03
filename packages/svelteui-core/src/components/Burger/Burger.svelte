@@ -16,7 +16,7 @@
 		...rest
 	}: BurgerProps = $props();
 
-	let _color = $derived(color ? color : $colorScheme === 'dark' ? 'white' : 'black');
+	let _color = $derived(color ? color : globalThis.$colorScheme === 'dark' ? 'white' : 'black');
 	let { classes, getStyles, cx } = $derived(
 		useStyles({ color: _color, size, opened }, { name: 'Burger' })
 	);

@@ -53,7 +53,7 @@ index: true
 					fullSize={$mobile ? true : false}
 					override={srcCodeButton}
 					size="xl"
-					color={$colorScheme === 'dark' ? 'gray' : 'dark'}
+					color={globalThis.$colorScheme === 'dark' ? 'gray' : 'dark'}
 				>
 					{#snippet leftIcon()}
 						<GithubLogo size={25} />
