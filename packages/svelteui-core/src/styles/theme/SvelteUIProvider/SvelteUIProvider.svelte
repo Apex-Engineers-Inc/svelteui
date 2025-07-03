@@ -31,8 +31,8 @@
 
 	$effect.pre(() => {
 		const htmlClassList: DOMTokenList = document.documentElement.classList;
-		if ($colorScheme === 'dark') htmlClassList.add(dark.className);
-		if ($colorScheme === 'light') htmlClassList.remove(dark.className);
+		if (globalThis.$colorScheme === 'dark') htmlClassList.add(dark.className);
+		if (globalThis.$colorScheme === 'light') htmlClassList.remove(dark.className);
 	});
 
 	const ctx = useSvelteUIThemeContext();

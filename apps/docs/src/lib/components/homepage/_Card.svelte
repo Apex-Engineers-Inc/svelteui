@@ -6,7 +6,8 @@
 	let { width } = $derived($viewport);
 
 	const { themeColor } = fns;
-	const secondaryColor = $colorScheme === 'dark' ? themeColor('dark', 1) : themeColor('dark', 7);
+	const secondaryColor =
+		globalThis.$colorScheme === 'dark' ? themeColor('dark', 1) : themeColor('dark', 7);
 </script>
 
 <Card override={{ maxW: 340 }} shadow="sm" padding="lg">

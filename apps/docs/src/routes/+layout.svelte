@@ -15,7 +15,7 @@
 
 	onMount(() => {
 		const colorSchemeValue = localStorage.getItem('colorScheme') as ColorScheme;
-		if (colorSchemeValue) $colorScheme = colorSchemeValue;
+		if (colorSchemeValue) globalThis.$colorScheme = colorSchemeValue;
 	});
 
 	interface Props {
@@ -35,7 +35,7 @@
 		</div>
 	</PageTransition>
 
-	<SvelteUIProvider withGlobalStyles themeObserver={$colorScheme}>
+	<SvelteUIProvider withGlobalStyles themeObserver={globalThis.$colorScheme}>
 		{#if !nosidebar}
 			<div
 				transition:fly|global={{ x: -100, duration: 300 }}

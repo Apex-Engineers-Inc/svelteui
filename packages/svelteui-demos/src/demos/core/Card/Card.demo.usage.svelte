@@ -52,7 +52,8 @@
 	} from '@svelteuidev/core';
 
 	const { themeColor } = useSvelteUITheme().fn;
-	const secondaryColor = $colorScheme === 'dark' ? themeColor('dark', 1) : themeColor('dark', 7);
+	const secondaryColor =
+		globalThis.$colorScheme === 'dark' ? themeColor('dark', 1) : themeColor('dark', 7);
 </script>
 
 <div style="width: 340px; margin: auto">

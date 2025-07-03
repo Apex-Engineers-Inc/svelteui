@@ -55,7 +55,11 @@
 	const titleId = `${baseId}-title`;
 	const bodyId = `${baseId}-body`;
 	const _overlayOpacity =
-		typeof overlayOpacity === 'number' ? overlayOpacity : $colorScheme === 'dark' ? 0.85 : 0.75;
+		typeof overlayOpacity === 'number'
+			? overlayOpacity
+			: globalThis.$colorScheme === 'dark'
+				? 0.85
+				: 0.75;
 
 	const { handleFocusReturn } = useFocusReturn();
 

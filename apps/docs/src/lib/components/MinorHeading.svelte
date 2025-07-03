@@ -11,7 +11,7 @@
 
 <Stack
 	override={{
-		backgroundColor: $colorScheme === 'light' ? '$blue100' : '$dark800',
+		backgroundColor: globalThis.$colorScheme === 'light' ? '$blue100' : '$dark800',
 		padding: '$8',
 		borderRadius: '0.5rem'
 	}}

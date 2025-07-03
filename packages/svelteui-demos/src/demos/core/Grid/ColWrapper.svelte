@@ -14,11 +14,17 @@
 		boxSizing: 'border-box',
 		height: '100%',
 		minHeight: 'inherit',
-		backgroundColor: $colorScheme === 'dark' ? themeColor('dark', 4) : themeColor('blue', 0),
+		backgroundColor:
+			globalThis.$colorScheme === 'dark' ? themeColor('dark', 4) : themeColor('blue', 0),
 		padding: '$mdPX'
 	}}
 >
-	<Text color={$colorScheme === 'dark' ? 'gray' : 'blue'} size="xl" weight={700} align="center">
+	<Text
+		color={globalThis.$colorScheme === 'dark' ? 'gray' : 'blue'}
+		size="xl"
+		weight={700}
+		align="center"
+	>
 		{@render children?.()}
 	</Text>
 </Box>

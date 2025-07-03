@@ -10,7 +10,7 @@
 	}
 <\/script>
 
-<SvelteUIProvider withGlobalStyles themeObserver={$colorScheme}>
+<SvelteUIProvider withGlobalStyles themeObserver={globalThis.$colorScheme}>
     <Stack align='center'>
         <Text>Press to change the theme</Text>
         <Switch onchange={toggleTheme} />

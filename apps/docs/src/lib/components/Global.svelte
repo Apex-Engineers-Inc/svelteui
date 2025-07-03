@@ -190,7 +190,7 @@
 	});
 </script>
 
-<SvelteUIProvider withGlobalStyles themeObserver={$colorScheme}>
+<SvelteUIProvider withGlobalStyles themeObserver={globalThis.$colorScheme}>
 	<Global />
 	<Layout />
 </SvelteUIProvider>
