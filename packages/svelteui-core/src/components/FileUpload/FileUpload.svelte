@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (fileIcon to fileIcon_1) making the component unusable -->
 <script lang="ts" context="module">
 	export const ctx = 'Upload';
 </script>
@@ -7,7 +8,7 @@
 	import { Box } from '../Box';
 	import type {
 		FileItem,
-		FileUploadProps as $$FileUploadProps,
+		FileUploadProps as $$Props,
 		FileUploadEvents as $$FileUploadEvents
 	} from './FileUpload';
 	import { useActions } from '$lib/internal';

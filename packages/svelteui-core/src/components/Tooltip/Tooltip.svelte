@@ -1,9 +1,10 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (label to label_1) making the component unusable -->
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { Box } from '../Box';
 	import { Popper } from '../Popper';
 	import useStyles from './Tooltip.styles';
-	import type { TooltipProps as $$TooltipProps } from './Tooltip';
+	import type { TooltipProps as $$Props } from './Tooltip';
 
 	interface $$Props extends $$TooltipProps {}
 

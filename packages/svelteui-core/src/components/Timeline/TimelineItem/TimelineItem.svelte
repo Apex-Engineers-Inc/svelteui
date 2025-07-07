@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (bullet to bullet_1) making the component unusable -->
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import Box from '../../Box/Box.svelte';
@@ -6,7 +7,7 @@
 	import { ctx } from '../Timeline.svelte';
 	import type { TimelineContext } from '../Timeline';
 	import useStyles from './TimelineItem.styles';
-	import type { TimelineItemProps as $$TimelineItemProps } from './TimelineItem';
+	import type { TimelineItemProps as $$Props } from './TimelineItem';
 
 	export let use: $$TimelineItemProps['use'] = [],
 		element: $$TimelineItemProps['element'] = undefined,
@@ -36,14 +37,14 @@
 			active !== undefined
 				? active
 				: $state.reverseActive
-				? $state.active >= children.length - index - 1
-				: $state.active >= index;
+					? $state.active >= children.length - index - 1
+					: $state.active >= index;
 		_lineActive =
 			lineActive !== undefined
 				? lineActive
 				: $state.reverseActive
-				? $state.active >= children.length - index - 1
-				: $state.active - 1 >= index;
+					? $state.active >= children.length - index - 1
+					: $state.active - 1 >= index;
 	}
 
 	onMount(() => calculateActive());
@@ -57,7 +58,7 @@
 	$: _lineWidth = lineWidth !== undefined ? lineWidth : $state.lineWidth;
 
 	// check if item is still checked when the context store updates
-	$: $state, calculateActive();
+	$: ($state, calculateActive());
 
 	$: ({ cx, classes } = useStyles(
 		{

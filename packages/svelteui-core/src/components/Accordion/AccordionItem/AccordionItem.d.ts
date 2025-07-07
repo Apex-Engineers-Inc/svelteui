@@ -6,6 +6,6 @@ import { ButtonProps } from '../../Button';
 
 export interface AccordionItemProps extends ButtonProps {
 	value?: string;
-	chevron?: Component | HTMLOrSVGElement;
+	chevronIcon?: Component | HTMLOrSVGElement;
 	disabled?: boolean;
 }

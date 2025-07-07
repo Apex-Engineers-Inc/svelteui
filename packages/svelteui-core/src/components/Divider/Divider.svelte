@@ -1,10 +1,11 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (label to label_1) making the component unusable -->
 <script lang="ts">
 	import Error from '$lib/internal/errors/Error.svelte';
 	import Box from '../Box/Box.svelte';
 	import Text from '../Text/Text.svelte';
 	import useStyles from './Divider.styles';
 	import { DividerErrors } from './Divider.errors';
-	import type { DividerProps as $$DividerProps } from './Divider';
+	import type { DividerProps as $$Props } from './Divider';
 
 	interface $$Props extends $$DividerProps {}
 

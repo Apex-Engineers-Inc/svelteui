@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (title to title_1) making the component unusable -->
 <script lang="ts">
 	import { createEventDispatcher, onMount } from 'svelte';
 	import { fade, scale } from 'svelte/transition';
@@ -12,7 +13,7 @@
 	import { OptionalPortal } from '../Portal';
 	import { Text } from '../Text';
 	import useStyles from './Modal.styles';
-	import type { ModalProps as $$ModalProps, ModalEvents as $$ModalEvents } from './Modal';
+	import type { ModalProps as $$Props, ModalEvents as $$ModalEvents } from './Modal';
 
 	interface $$Props extends $$ModalProps {}
 

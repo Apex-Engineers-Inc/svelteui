@@ -1,9 +1,10 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (icon to icon_1) making the component unusable -->
 <script lang="ts">
 	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
 	import IconRenderer from '../IconRenderer/IconRenderer.svelte';
 	import useStyles from './Input.styles';
-	import type { InputProps as $$InputProps } from './Input';
+	import type { InputProps as $$Props } from './Input';
 
 	interface $$Props extends $$InputProps {}
 

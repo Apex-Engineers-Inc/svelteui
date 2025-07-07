@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (icon to icon_1) making the component unusable -->
 <script lang="ts">
 	import { getContext, onMount } from 'svelte';
 	import { Box } from '../../Box';
@@ -5,7 +6,7 @@
 	import { ctx } from '../Tabs.svelte';
 	import type { TabsContext } from '../Tabs';
 	import useStyles from './Tab.styles';
-	import type { TabProps as $$TabProps } from './Tab';
+	import type { TabProps as $$Props } from './Tab';
 
 	interface $$Props extends $$TabProps {}
 
@@ -49,7 +50,7 @@
 	$: _variant = variant !== undefined ? variant : _variant;
 
 	// check if item is still checked when the context store updates
-	$: $state, calculateActive();
+	$: ($state, calculateActive());
 
 	$: ({ cx, classes } = useStyles(
 		{ color: _color, orientation: _orientation },

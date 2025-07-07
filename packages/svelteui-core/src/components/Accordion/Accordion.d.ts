@@ -33,7 +33,7 @@ export interface AccordionProps<Multiple extends boolean = false>
 	multiple?: Multiple;
 	loop?: boolean;
 	id?: string;
-	chevron?: Component | HTMLOrSVGElement;
+	chevronIcon?: Component | HTMLOrSVGElement;
 	chevronPosition?: 'left' | 'right';
 	chevronSize?: string | number;
 	disableChevronRotation?: boolean;

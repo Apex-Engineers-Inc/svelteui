@@ -10,12 +10,10 @@
 	import useStyles from './Accordion.styles';
 	import type {
 		AccordionContext,
-		AccordionProps as $$AccordionProps,
+		AccordionProps as $$Props,
 		AccordionEvents as $$AccordionEvents,
 		AccordionValue
 	} from './Accordion';
-
-	interface $$Props extends $$AccordionProps<Multiple> {}
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	interface $$Events extends $$AccordionEvents<Multiple> {}
@@ -29,9 +27,9 @@
 		defaultValue: $$Props['defaultValue'] = undefined,
 		radius: $$Props['radius'] = 'sm',
 		order: $$Props['order'] = undefined,
-		multiple: $$Props['multiple'] = false as Multiple,
+		multiple: $$Props['multiple'] = false,
 		id: $$Props['id'] = randomID(),
-		chevron: $$Props['chevron'] = Chevron,
+		chevronIcon: $$Props['chevronIcon'] = Chevron as any,
 		chevronPosition: $$Props['chevronPosition'] = 'right',
 		chevronSize: $$Props['chevronSize'] = 24,
 		disableChevronRotation: $$Props['disableChevronRotation'] = false,
@@ -45,7 +43,7 @@
 		variant,
 		order,
 		radius,
-		chevron,
+		chevron: chevronIcon,
 		chevronPosition,
 		chevronSize,
 		disableChevronRotation,
@@ -53,10 +51,10 @@
 		updateActive,
 		isItemActive
 	};
-	const state = writable(stateContent);
+	const context = writable(stateContent);
 
 	// converts internal value into correct type
-	$: _value = value || defaultValue;
+	$: _value = (value || defaultValue) as AccordionValue<Multiple>;
 	$: {
 		if (multiple && !Array.isArray(_value)) {
 			_value = (_value ? [_value] : []) as AccordionValue<Multiple>;
@@ -70,7 +68,7 @@
 			variant,
 			order,
 			radius,
-			chevron,
+			chevron: chevronIcon,
 			chevronPosition,
 			chevronSize,
 			disableChevronRotation,
@@ -80,7 +78,7 @@
 			getControlsId,
 			getRegionId
 		} as AccordionContext;
-		state.set(stateContent);
+		context.set(stateContent);
 	}
 
 	function updateActive(itemValue: string) {
@@ -112,7 +110,7 @@
 		return `${id}-${itemValue}-region`;
 	}
 
-	setContext(key, state);
+	setContext(key, context);
 
 	$: ({ cx, classes, getStyles } = useStyles({ radius, variant }, { name: 'Accordion' }));
 </script>

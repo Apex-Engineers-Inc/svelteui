@@ -6,16 +6,14 @@
 	import type { AccordionContext } from '../Accordion';
 	import { key } from '../key';
 	import useStyles from './AccordionItem.styles';
-	import type { AccordionItemProps as $$AccordionItemProps } from './AccordionItem';
-
-	interface $$Props extends $$AccordionItemProps {}
+	import type { AccordionItemProps as $$Props } from './AccordionItem';
 
 	export let use: $$Props['use'] = [],
 		element: $$Props['element'] = undefined,
 		className: $$Props['className'] = '',
 		override: $$Props['override'] = {},
 		value: $$Props['value'] = undefined,
-		chevron: $$Props['chevron'] = undefined,
+		chevronIcon: $$Props['chevronIcon'] = undefined,
 		disabled: $$Props['disabled'] = false;
 	export { className as class };
 
@@ -49,6 +47,11 @@ Item of an accordion.
       Content of the accordion item
     </Accordion.Item>
     ```
+
+@slots
+- chevronIcon: Custom chevron icon component
+- control: Control content (required)
+- default: Main content of the accordion item
 -->
 
 <Box
@@ -73,8 +76,8 @@ Item of an accordion.
 			class={classes.chevron}
 			data-rotate={!$ctx.disableChevronRotation && $ctx.isItemActive(value)}
 		>
-			<slot name="chevron">
-				<svelte:component this={chevron || $ctx.chevron} />
+			<slot name="chevronIcon">
+				<svelte:component this={chevronIcon || $ctx.chevron} />
 			</slot>
 		</span>
 		<span class={classes.controlContent}>

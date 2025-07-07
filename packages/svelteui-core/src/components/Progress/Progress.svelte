@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (label to label_1) making the component unusable -->
 <script lang="ts">
 	import useStyles, { getCumulativeSections } from './Progress.styles';
 	import { tweened } from 'svelte/motion';
@@ -5,7 +6,7 @@
 	import { Text } from '../Text';
 	import { randomID } from '$lib/styles';
 	import { cubicOut } from 'svelte/easing';
-	import type { ProgressProps as $$ProgressProps } from './Progress';
+	import type { ProgressProps as $$Props } from './Progress';
 
 	interface $$Props extends $$ProgressProps {}
 

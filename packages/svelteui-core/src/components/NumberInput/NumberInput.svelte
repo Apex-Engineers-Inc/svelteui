@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (icon to icon_1) making the component unusable -->
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
 	import { useActions } from '$lib/internal';
@@ -5,7 +6,7 @@
 	import useStyles from './NumberInput.styles';
 	import { defaultFormatter, defaultParser } from './utils';
 	import type {
-		NumberInputProps as $$NumberInputProps,
+		NumberInputProps as $$Props,
 		NumberInputEvents as $$NumberInputEvents
 	} from './NumberInput';
 

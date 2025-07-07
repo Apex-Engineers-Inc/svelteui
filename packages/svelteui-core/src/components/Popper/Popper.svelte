@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: $$props is used together with named props in a way that cannot be automatically migrated. -->
 <script lang="ts">
 	import useStyles from './Popper.styles';
 	import { calculateArrowPlacement } from './Popper.styles';
@@ -5,7 +6,7 @@
 	import { onDestroy } from 'svelte';
 	import { getTransition, useActions } from '$lib/internal';
 	import type { Placement } from '@floating-ui/dom';
-	import type { PopperProps as $$PopperProps } from './Popper';
+	import type { PopperProps as $$Props } from './Popper';
 
 	interface $$Props extends $$PopperProps {}
 

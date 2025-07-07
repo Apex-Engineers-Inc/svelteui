@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (control to control_1) making the component unusable -->
 <script lang="ts" context="module">
 	export const ctx = 'Menu';
 </script>
@@ -15,7 +16,7 @@
 	import { useActions } from '$lib/internal';
 	import type { Writable } from 'svelte/store';
 	import type { MenuContextValue } from './Menu.context';
-	import type { MenuProps as $$MenuProps, MenuEvents as $$MenuEvents } from './Menu';
+	import type { MenuProps as $$Props, MenuEvents as $$MenuEvents } from './Menu';
 
 	interface $$Props extends $$MenuProps {}
 

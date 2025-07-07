@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (icon to icon_1) making the component unusable -->
 <script lang="ts">
 	import { getContext } from 'svelte';
 	import type { Writable } from 'svelte/store';
@@ -7,9 +8,7 @@
 	import { ctx } from '../Menu.svelte';
 	import type { MenuContextValue } from '../Menu.context';
 	import useStyles, { getContextItemIndex } from './MenuItem.styles';
-	import type { MenuItemProps as $$MenuItemProps } from './MenuItem';
-
-	interface $$Props extends $$MenuItemProps {}
+	import type { MenuItemProps as $$Props } from './MenuItem';
 
 	export let use: $$Props['use'] = [],
 		element: $$Props['element'] = undefined,
