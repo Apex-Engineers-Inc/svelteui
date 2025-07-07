@@ -1,4 +1,4 @@
-<script lang="ts" context="module">
+<script lang="ts" module>
 	export const ctx = 'Radio';
 </script>
 
@@ -6,32 +6,52 @@
 	import { useActions } from '$lib/internal';
 	import { randomID } from '$lib/styles';
 	import Box from '../Box/Box.svelte';
-	import type { RadioProps as $$RadioProps } from './Radio';
+	import type { RadioProps as $$Props } from './Radio';
 	import useStyles from './Radio.styles';
 
-	interface $$Props extends $$RadioProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		color?: $$Props['color'];
+		id?: $$Props['id'];
+		disabled?: $$Props['disabled'];
+		value?: $$Props['value'];
+		checked?: $$Props['checked'];
+		label?: $$Props['label'];
+		error?: $$Props['error'];
+		labelDirection?: $$Props['labelDirection'];
+		size?: $$Props['size'];
+		name?: $$Props['name'];
+		group?: $$Props['group'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		color: $$Props['color'] = 'blue',
-		id: $$Props['id'] = randomID(),
-		disabled: $$Props['disabled'] = false,
-		value: $$Props['value'] = undefined,
-		checked: $$Props['checked'] = false,
-		label: $$Props['label'] = '',
-		error: $$Props['error'] = false,
-		labelDirection: $$Props['labelDirection'] = 'left',
-		size: $$Props['size'] = 'sm',
-		name: $$Props['name'] = '',
-		group: $$Props['group'] = undefined;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		color = 'blue',
+		id = randomID(),
+		disabled = false,
+		value = undefined,
+		checked = $bindable(false),
+		label = '',
+		error = false,
+		labelDirection = 'left',
+		size = 'sm',
+		name = '',
+		group = $bindable(undefined),
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{ color, size, labelDirection, error },
-		{ name: 'Radio' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles({ color, size, labelDirection, error }, { name: 'Radio' })
+	);
 
 	function onChange(e: InputEvent) {
 		checked = (e.target as HTMLInputElement).checked;
@@ -65,7 +85,7 @@ Radio component.
 					{disabled}
 					{value}
 					{id}
-					{...$$restProps}
+					{...rest}
 					use:useActions={use}
 				/>
 			{:else}
@@ -78,15 +98,15 @@ Radio component.
 					{disabled}
 					{value}
 					{id}
-					{...$$restProps}
-					on:change={onChange}
+					{...rest}
+					onchange={onChange}
 					use:useActions={use}
 				/>
 			{/if}
-			<div class={classes.inner} aria-hidden />
+			<div class={classes.inner} aria-hidden></div>
 		</div>
 		<label class={classes.label} class:disabled for={id}>
-			<slot>{label}</slot>
+			{#if children}{@render children()}{:else}{label}{/if}
 		</label>
 	</div>
 </Box>

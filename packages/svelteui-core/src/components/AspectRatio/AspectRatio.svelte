@@ -1,23 +1,36 @@
 <script lang="ts">
 	import useStyles from './AspectRatio.styles';
 	import Box from '../Box/Box.svelte';
-	import type { AspectRatioProps as $$AspectRatioProps } from './AspectRatio';
+	import type { AspectRatioProps as $$Props } from './AspectRatio';
 
-	interface $$Props extends $$AspectRatioProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		ratio?: $$Props['ratio'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		ratio: $$Props['ratio'] = 1;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		ratio = 1,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{
-			ratio
-		},
-		{ name: 'AspectRatio' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles(
+			{
+				ratio
+			},
+			{ name: 'AspectRatio' }
+		)
+	);
 </script>
 
 <!--
@@ -37,11 +50,6 @@ Enforce desired width/height ratio.
   ```
 -->
 
-<Box
-	bind:element
-	{use}
-	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
->
-	<slot />
+<Box bind:element {use} class={cx(className, classes.root, getStyles({ css: override }))} {...rest}>
+	{@render children?.()}
 </Box>

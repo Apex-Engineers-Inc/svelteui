@@ -3,7 +3,7 @@
 	import useStyles from './CalendarHeader.styles';
 	import SelectChevronIcon from './SelectChevronIcon.svelte';
 	import ArrowIcon from './ArrowIcon.svelte';
-	import type { CalendarHeaderProps as $$CalendarHeaderProps } from './CalendarHeader.styles';
+	import type { CalendarHeaderProps as $$Props } from './CalendarHeader.styles';
 
 	export let use: $$CalendarHeaderProps['use'] = [],
 		element: $$CalendarHeaderProps['element'] = undefined,

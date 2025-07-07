@@ -1,6 +1,11 @@
-<script>
-	export let color = 'currentColor';
-	export let size = 15;
+<script lang="ts">
+	interface Props {
+		color?: string;
+		size?: number;
+		[key: string]: any
+	}
+
+	let { color = 'currentColor', size = 15, ...rest }: Props = $props();
 </script>
 
 <svg
@@ -9,7 +14,7 @@
 	viewBox="0 0 15 15"
 	fill="none"
 	xmlns="http://www.w3.org/2000/svg"
-	{...$$restProps}
+	{...rest}
 >
 	<path
 		fill-rule="evenodd"

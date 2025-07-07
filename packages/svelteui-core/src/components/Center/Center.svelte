@@ -1,18 +1,29 @@
 <script lang="ts">
 	import useStyles from './Center.styles';
 	import Box from '../Box/Box.svelte';
-	import type { CenterProps as $$CenterProps } from './Center';
+	import type { CenterProps as $$Props } from './Center';
 
-	interface $$Props extends $$CenterProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		inline?: $$Props['inline'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		inline: $$Props['inline'] = false;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		inline = false,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles({ inline }, { name: 'Center' }));
+	let { cx, classes, getStyles } = $derived(useStyles({ inline }, { name: 'Center' }));
 </script>
 
 <!--
@@ -28,11 +39,6 @@ Centers content vertically and horizontally.
 	</Center>
     ```
 -->
-<Box
-	bind:element
-	{use}
-	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
->
-	<slot />
+<Box bind:element {use} class={cx(className, classes.root, getStyles({ css: override }))} {...rest}>
+	{@render children?.()}
 </Box>

@@ -1,19 +1,31 @@
 <script lang="ts">
 	import { Box } from '../Box';
 	import useStyles from './Space.styles';
-	import type { SpaceProps as $$SpaceProps } from './Space';
+	import type { SpaceProps as $$Props } from './Space';
 
-	interface $$Props extends $$SpaceProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		w?: $$Props['w'];
+		h?: $$Props['h'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		w: $$Props['w'] = 0,
-		h: $$Props['h'] = 0;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		w = 0,
+		h = 0,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles({ h, w }, { name: 'Space' }));
+	let { cx, classes, getStyles } = $derived(useStyles({ h, w }, { name: 'Space' }));
 </script>
 
 <!--
@@ -29,11 +41,6 @@ Add horizontal or vertical spacing from theme.
 		<Space w={30} /> // Width will be set to 30px
     ```
 -->
-<Box
-	bind:element
-	{use}
-	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
->
-	<slot />
+<Box bind:element {use} class={cx(className, classes.root, getStyles({ css: override }))} {...rest}>
+	{@render children?.()}
 </Box>

@@ -3,7 +3,7 @@
 	import { getDayTabIndex } from './get-day-tab-index/get-day-tab-index';
 	import { getDayAutofocus } from './get-day-autofocus/get-day-autofocus';
 	import { useActions } from '@svelteuidev/core';
-	import type { DayProps as $$DayProps } from './Day.styles';
+	import type { DayProps as $$Props } from './Day.styles';
 
 	export let use: $$DayProps['use'] = [],
 		element: $$DayProps['element'] = undefined,

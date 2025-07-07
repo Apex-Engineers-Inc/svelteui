@@ -1,29 +1,35 @@
 <script lang="ts">
 	import { Box } from '../Box';
 	import useStyles from './TypographyProvider.styles';
-	import type { TypographyProviderProps as $$TypographyProviderProps } from './TypographyProvider';
+	import type { TypographyProviderProps as $$Props } from './TypographyProvider';
 
-	interface $$Props extends $$TypographyProviderProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		primaryColor?: $$Props['primaryColor'];
+		underline?: $$Props['underline'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		primaryColor: $$Props['primaryColor'] = 'blue',
-		underline: $$Props['underline'] = true;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		primaryColor = 'blue',
+		underline = true,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{ primaryColor, underline },
-		{ name: 'TypographyProvider' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles({ primaryColor, underline }, { name: 'TypographyProvider' })
+	);
 </script>
 
-<Box
-	bind:element
-	class={cx(className, classes.root, getStyles({ css: override }))}
-	{use}
-	{...$$restProps}
->
-	<slot />
+<Box bind:element class={cx(className, classes.root, getStyles({ css: override }))} {use} {...rest}>
+	{@render children?.()}
 </Box>

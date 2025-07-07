@@ -3,7 +3,7 @@
     <script lang="ts">
         import useStyles, { WRAPPER_PADDING } from './SegmentedControl.styles';
         import { Box } from '../Box';
-        import type { SegmentedControlProps as $$SegmentedControlProps } from './SegmentedControl';
+        import type { SegmentedControlProps as $$Props } from './SegmentedControl';
 
         export let use: $$SegmentedControlProps['use'] = [],
 		element: $$SegmentedControlProps['element'] = undefined,

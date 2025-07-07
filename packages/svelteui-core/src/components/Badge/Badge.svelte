@@ -2,34 +2,56 @@
 	import useStyles from './Badge.styles';
 	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
-	import type { BadgeProps as $$BadgeProps } from './Badge';
+	import type { BadgeProps as $$Props } from './Badge';
 
-	interface $$Props extends $$BadgeProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		color?: $$Props['color'];
+		variant?: $$Props['variant'];
+		gradient?: $$Props['gradient'];
+		size?: $$Props['size'];
+		radius?: $$Props['radius'];
+		fullWidth?: $$Props['fullWidth'];
+		leftSection?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+		rightSection?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		color: $$Props['color'] = 'blue',
-		variant: $$Props['variant'] = 'light',
-		gradient: $$Props['gradient'] = { from: 'blue', to: 'cyan', deg: 45 },
-		size: $$Props['size'] = 'md',
-		radius: $$Props['radius'] = 'xl',
-		fullWidth: $$Props['fullWidth'] = false;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		color = 'blue',
+		variant = 'light',
+		gradient = { from: 'blue', to: 'cyan', deg: 45 },
+		size = 'md',
+		radius = 'xl',
+		fullWidth = false,
+		leftSection,
+		children,
+		rightSection,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes } = useStyles(
-		{
-			color,
-			fullWidth,
-			size,
-			radius,
-			gradientDeg: gradient.deg,
-			gradientFrom: gradient.from,
-			gradientTo: gradient.to
-		},
-		{ override, name: 'Badge' }
-	));
+	let { cx, classes } = $derived(
+		useStyles(
+			{
+				color,
+				fullWidth,
+				size,
+				radius,
+				gradientDeg: gradient.deg,
+				gradientFrom: gradient.from,
+				gradientTo: gradient.to
+			},
+			{ override, name: 'Badge' }
+		)
+	);
 </script>
 
 <!--
@@ -48,21 +70,16 @@ Display badge, pill or tag
 	</Box>
     ```
 -->
-<Box
-	use={[[useActions, use]]}
-	bind:element
-	class={cx(className, variant, classes.root)}
-	{...$$restProps}
->
-	{#if $$slots.leftSection}
+<Box use={[[useActions, use]]} bind:element class={cx(className, variant, classes.root)} {...rest}>
+	{#if leftSection}
 		<span class={classes.leftSection}>
-			<slot name="leftSection" />
+			{@render leftSection?.()}
 		</span>
 	{/if}
-	<span class={classes.inner}><slot /></span>
-	{#if $$slots.rightSection}
+	<span class={classes.inner}>{@render children?.()}</span>
+	{#if rightSection}
 		<span class={classes.rightSection}>
-			<slot name="rightSection" />
+			{@render rightSection?.()}
 		</span>
 	{/if}
 </Box>

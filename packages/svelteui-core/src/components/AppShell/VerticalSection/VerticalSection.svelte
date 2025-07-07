@@ -2,31 +2,48 @@
 	import useStyles from './VerticalSection.styles';
 	import { Box } from '../../Box';
 	import { globalCss } from '$lib/styles';
-	import type { VerticalSectionProps as $$VerticalSectionProps } from './VerticalSection';
+	import type { VerticalSectionProps as $$Props } from './VerticalSection';
 
-	interface $$Props extends $$VerticalSectionProps {}
-
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		height: $$Props['height'] = undefined,
-		fixed: $$Props['fixed'] = false,
-		position: $$Props['position'] = {},
-		zIndex: $$Props['zIndex'] = 100,
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		height?: $$Props['height'];
+		fixed?: $$Props['fixed'];
+		position?: $$Props['position'];
+		zIndex?: $$Props['zIndex'];
 		section: $$Props['section'];
-	export { className as class };
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{
-			borderPosition: section === 'header' ? 'bottom' : 'top',
-			fixed,
-			height,
-			position,
-			zIndex
-		},
-		{ name: 'VerticalSection' }
-	));
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		height = undefined,
+		fixed = false,
+		position = {},
+		zIndex = 100,
+		section,
+		children,
+		...rest
+	}: Props = $props();
+
+	let { cx, classes, getStyles } = $derived(
+		useStyles(
+			{
+				borderPosition: section === 'header' ? 'bottom' : 'top',
+				fixed,
+				height,
+				position,
+				zIndex
+			},
+			{ name: 'VerticalSection' }
+		)
+	);
 
 	const injectStyles = globalCss({
 		':root': {
@@ -41,7 +58,7 @@
 	bind:element
 	root={section === 'header' ? 'nav' : 'footer'}
 	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </Box>

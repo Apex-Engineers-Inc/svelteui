@@ -1,32 +1,58 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { createEventDispatcher } from 'svelte';
 	import InputWrapper from '../../InputWrapper/InputWrapper.svelte';
 	import Group from '../../Group/Group.svelte';
 	import Radio from '../Radio.svelte';
-	import type { RadioGroupProps as $$RadioGroupProps } from './RadioGroup';
+	import type { RadioGroupProps as $$Props } from './RadioGroup';
 	import { randomID } from '$lib/styles';
 
-	interface $$Props extends $$RadioGroupProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		items?: $$Props['items'];
+		group?: $$Props['group'];
+		color?: $$Props['color'];
+		value?: $$Props['value'];
+		label?: $$Props['label'];
+		disabled?: $$Props['disabled'];
+		size?: $$Props['size'];
+		radius?: $$Props['radius'];
+		position?: $$Props['position'];
+		direction?: $$Props['direction'];
+		labelDirection?: $$Props['labelDirection'];
+		align?: $$Props['align'];
+		spacing?: $$Props['spacing'];
+		name?: $$Props['name'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		items: $$Props['items'] = [],
-		group: $$Props['group'] = undefined,
-		color: $$Props['color'] = undefined,
-		value: $$Props['value'] = undefined,
-		label: $$Props['label'] = undefined,
-		disabled: $$Props['disabled'] = false,
-		size: $$Props['size'] = undefined,
-		radius: $$Props['radius'] = undefined,
-		position: $$Props['position'] = 'left',
-		direction: $$Props['direction'] = 'row',
-		labelDirection: $$Props['labelDirection'] = 'right',
-		align: $$Props['align'] = 'flex-start',
-		spacing: $$Props['spacing'] = 'md',
-		name: $$Props['name'] = randomID();
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		items = [],
+		group = $bindable(undefined),
+		color = undefined,
+		value = $bindable(undefined),
+		label = undefined,
+		disabled = false,
+		size = undefined,
+		radius = undefined,
+		position = 'left',
+		direction = 'row',
+		labelDirection = 'right',
+		align = 'flex-start',
+		spacing = 'md',
+		name = randomID(),
+		children,
+		...rest
+	}: Props = $props();
 
 	const dispatch = createEventDispatcher();
 
@@ -36,7 +62,9 @@
 		dispatch('change', val);
 	}
 
-	$: group = group || value;
+	run(() => {
+		group = group || value;
+	});
 </script>
 
 <!--
@@ -54,7 +82,7 @@ A Radio group component is a container for Radios.
     ```
 -->
 
-<InputWrapper bind:element class={className} {label} {override} {size} {...$$restProps}>
+<InputWrapper bind:element class={className} {label} {override} {size} {...rest}>
 	<Group {direction} {align} {position} {spacing}>
 		{#if items && items.length > 0}
 			{#each items as item}
@@ -73,7 +101,7 @@ A Radio group component is a container for Radios.
 				/>
 			{/each}
 		{:else}
-			<slot />
+			{@render children?.()}
 		{/if}
 	</Group>
 </InputWrapper>

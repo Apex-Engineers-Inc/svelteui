@@ -3,35 +3,63 @@
 	import { randomID } from '$lib/styles';
 	import { Input } from '../Input';
 	import { InputWrapper } from '../InputWrapper';
-	import type { TextInputProps as $$TextInputProps } from './TextInput';
+	import type { TextInputProps as $$Props } from './TextInput';
 
-	interface $$Props extends $$TextInputProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		label?: $$Props['label'];
+		description?: $$Props['description'];
+		error?: $$Props['error'];
+		required?: $$Props['required'];
+		labelProps?: $$Props['labelProps'];
+		descriptionProps?: $$Props['descriptionProps'];
+		errorProps?: $$Props['errorProps'];
+		invalid?: $$Props['invalid'];
+		id?: $$Props['id'];
+		labelElement?: $$Props['labelElement'];
+		size?: $$Props['size'];
+		showRightSection?: $$Props['showRightSection'];
+		value?: $$Props['value'];
+		placeholder?: $$Props['placeholder'];
+		rightSection?: import('svelte').Snippet;
+		icon?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		label: $$Props['label'] = '',
-		description: $$Props['description'] = null,
-		error: $$Props['error'] = null,
-		required: $$Props['required'] = false,
-		labelProps: $$Props['labelProps'] = {},
-		descriptionProps: $$Props['descriptionProps'] = {},
-		errorProps: $$Props['errorProps'] = {},
-		invalid: $$Props['invalid'] = false,
-		id: $$Props['id'] = randomID('text-input'),
-		labelElement: $$Props['labelElement'] = 'label',
-		size: $$Props['size'] = 'sm',
-		showRightSection: $$Props['showRightSection'] = undefined,
-		value: $$Props['value'] = '',
-		placeholder: $$Props['placeholder'] = '';
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		label = '',
+		description = null,
+		error = null,
+		required = false,
+		labelProps = {},
+		descriptionProps = {},
+		errorProps = {},
+		invalid = false,
+		id = randomID('text-input'),
+		labelElement = 'label',
+		size = 'sm',
+		showRightSection = undefined,
+		value = $bindable(''),
+		placeholder = '',
+		rightSection,
+		icon,
+		...rest
+	}: Props = $props();
 
 	// Flag that enables the override of the right section slot
 	// of the Input component only if it was provided
-	const _showRightSection =
-		showRightSection === undefined ? !!$$slots.rightSection : showRightSection;
-	$: _invalid = invalid || !!error;
+	const _showRightSection = showRightSection === undefined ? !!rightSection : showRightSection;
+	let _invalid = $derived(invalid || !!error);
+
+	const rightSection_render = $derived(rightSection);
+	const icon_render = $derived(icon);
 </script>
 
 <!--
@@ -78,12 +106,16 @@ Input for text that also uses labels for the input
 		{size}
 		{id}
 		{placeholder}
-		{...$$restProps}
+		{...rest}
 		use={[[useActions, use]]}
 		invalid={_invalid}
 		showRightSection={_showRightSection}
 	>
-		<slot slot="rightSection" name="rightSection" />
-		<slot slot="icon" name="icon" />
+		{#snippet rightSection()}
+			{@render rightSection_render?.()}
+		{/snippet}
+		{#snippet icon()}
+			{@render icon_render?.()}
+		{/snippet}
 	</Input>
 </InputWrapper>

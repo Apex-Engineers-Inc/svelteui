@@ -1,62 +1,91 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { getSystemStyles } from './context';
 	import { css as _css, useSvelteUITheme, useSvelteUIThemeContext } from '$lib/styles';
 	import { useActions } from '$lib/internal';
-	import type { BoxProps as $$BoxProps } from './Box';
+	import type { BoxProps as $$Props } from './Box';
 
-	interface $$Props extends $$BoxProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		css?: $$Props['css'];
+		root?: $$Props['root'];
+		m?: $$Props['m'];
+		my?: $$Props['my'];
+		mx?: $$Props['mx'];
+		mt?: $$Props['mt'];
+		mb?: $$Props['mb'];
+		ml?: $$Props['ml'];
+		mr?: $$Props['mr'];
+		p?: $$Props['p'];
+		py?: $$Props['py'];
+		px?: $$Props['px'];
+		pt?: $$Props['pt'];
+		pb?: $$Props['pb'];
+		pl?: $$Props['pl'];
+		pr?: $$Props['pr'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		css: $$Props['css'] = {},
-		root: $$Props['root'] = undefined,
-		m: $$Props['m'] = undefined,
-		my: $$Props['my'] = undefined,
-		mx: $$Props['mx'] = undefined,
-		mt: $$Props['mt'] = undefined,
-		mb: $$Props['mb'] = undefined,
-		ml: $$Props['ml'] = undefined,
-		mr: $$Props['mr'] = undefined,
-		p: $$Props['p'] = undefined,
-		py: $$Props['py'] = undefined,
-		px: $$Props['px'] = undefined,
-		pt: $$Props['pt'] = undefined,
-		pb: $$Props['pb'] = undefined,
-		pl: $$Props['pl'] = undefined,
-		pr: $$Props['pr'] = undefined;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		css = {},
+		root = undefined,
+		m = undefined,
+		my = undefined,
+		mx = undefined,
+		mt = undefined,
+		mb = undefined,
+		ml = undefined,
+		mr = undefined,
+		p = undefined,
+		py = undefined,
+		px = undefined,
+		pt = undefined,
+		pb = undefined,
+		pl = undefined,
+		pr = undefined,
+		children,
+		...rest
+	}: Props = $props();
 
 	/** workaround for root type errors, this should be replaced by a better type system */
 	const castRoot = () => root as string;
 	const theme = useSvelteUIThemeContext()?.theme || useSvelteUITheme();
-	$: getCSSStyles = typeof css === 'function' ? css : () => css;
+	let getCSSStyles = $derived(typeof css === 'function' ? css : () => css);
 
-	let isHTMLElement;
-	let isComponent;
-	$: {
+	let isHTMLElement = $state();
+	let isComponent = $state();
+	run(() => {
 		isHTMLElement = root && typeof root === 'string';
 		isComponent = root && typeof root === 'function';
-	}
-	$: BoxStyles = _css({});
-	$: systemStyles = getSystemStyles(
-		{
-			m,
-			my,
-			mx,
-			mt,
-			mb,
-			ml,
-			mr,
-			p,
-			py,
-			px,
-			pt,
-			pb,
-			pl,
-			pr
-		},
-		theme
+	});
+	let BoxStyles = $derived(_css({}));
+	let systemStyles = $derived(
+		getSystemStyles(
+			{
+				m,
+				my,
+				mx,
+				mt,
+				mb,
+				ml,
+				mr,
+				p,
+				py,
+				px,
+				pt,
+				pb,
+				pl,
+				pr
+			},
+			theme
+		)
 	);
 </script>
 
@@ -81,27 +110,27 @@ Add inline styles to any element or component with sx.
 		this={castRoot()}
 		use:useActions={use}
 		class="{className} {BoxStyles({ css: {...getCSSStyles(theme), ...systemStyles} })}"
-		{...$$restProps}
+		{...rest}
 	>
-		<slot></slot>
+		{@render children?.()}
 	</svelte:element>
 {:else if isComponent && typeof root !== 'string'}
-	<svelte:component
-		this={root}
+	{@const SvelteComponent = root}
+	<SvelteComponent
 		bind:this={element}
 		use={[[useActions, use]]}
 		class="{className} {BoxStyles({ css: { ...getCSSStyles(theme), ...systemStyles } })}"
-		{...$$restProps}
+		{...rest}
 	>
-		<slot />
-	</svelte:component>
+		{@render children?.()}
+	</SvelteComponent>
 {:else}
 	<div
 		bind:this={element}
 		use:useActions={use}
 		class="{className} {BoxStyles({ css: { ...getCSSStyles(theme), ...systemStyles } })}"
-		{...$$restProps}
+		{...rest}
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 {/if}

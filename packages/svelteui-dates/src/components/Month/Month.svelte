@@ -8,7 +8,7 @@
 	import { upperFirst } from '@svelteuidev/composables';
 	import { getMonthDays, getWeekdaysNames, isSameDate } from '../../utils';
 	import { useActions } from '@svelteuidev/core';
-	import type { MonthProps as $$MonthProps } from './Month.styles';
+	import type { MonthProps as $$Props } from './Month.styles';
 
 	export let use: $$MonthProps['use'] = [],
 		element: $$MonthProps['element'] = undefined,

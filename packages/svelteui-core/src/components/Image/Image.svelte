@@ -1,37 +1,62 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import { useActions } from '$lib/internal';
 	import { Box } from '../Box';
 	import { Skeleton } from '../Skeleton';
 	import { Text } from '../Text';
 	import useStyles from './Image.styles';
 	import ImageIcon from './ImageIcon.svelte';
-	import type { ImageProps as $$ImageProps } from './Image';
+	import type { ImageProps as $$Props } from './Image';
 
-	interface $$Props extends $$ImageProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		override?: $$Props['override'];
+		radius?: $$Props['radius'];
+		class?: $$Props['className'];
+		src?: $$Props['src'];
+		alt?: $$Props['alt'];
+		fit?: $$Props['fit'];
+		width?: $$Props['width'];
+		height?: $$Props['height'];
+		caption?: $$Props['caption'];
+		usePlaceholder?: $$Props['usePlaceholder'];
+		loader?: $$Props['loader'];
+		placeholder?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		override: $$Props['override'] = {},
-		radius: $$Props['radius'] = 0,
-		className: $$Props['className'] = '',
-		src: $$Props['src'] = undefined,
-		alt: $$Props['alt'] = '',
-		fit: $$Props['fit'] = 'cover',
-		width: $$Props['width'] = '100%',
-		height: $$Props['height'] = 'auto',
-		caption: $$Props['caption'] = undefined,
-		usePlaceholder: $$Props['usePlaceholder'] = false,
-		loader: $$Props['loader'] = false;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		override = {},
+		radius = 0,
+		class: className = '',
+		src = undefined,
+		alt = '',
+		fit = 'cover',
+		width = '100%',
+		height = 'auto',
+		caption = undefined,
+		usePlaceholder = false,
+		loader = false,
+		placeholder,
+		...rest
+	}: Props = $props();
 
-	let loaded: boolean = false;
-	let error: boolean = false;
-	let showPlaceholder: boolean = false;
+	let loaded: boolean = $state(false);
+	let error: boolean = $state(false);
+	let showPlaceholder: boolean = $state(false);
 	const onLoad = () => (loaded = true);
 	const onError = () => (error = true);
 
-	$: showPlaceholder = usePlaceholder && (!loaded || error);
-	$: ({ cx, classes, getStyles } = useStyles({ radius, fit, height, width }, { name: 'Image' }));
+	run(() => {
+		showPlaceholder = usePlaceholder && (!loaded || error);
+	});
+	let { cx, classes, getStyles } = $derived(
+		useStyles({ radius, fit, height, width }, { name: 'Image' })
+	);
 </script>
 
 <!--
@@ -58,16 +83,16 @@ Dynamic Image component with optional placeholder for loading and error state
 					class={classes.image}
 					{src}
 					{alt}
-					on:load={onLoad}
-					on:error={onError}
-					{...$$restProps}
+					onload={onLoad}
+					onerror={onError}
+					{...rest}
 				/>
 			</Skeleton>
 			{#if showPlaceholder}
 				<div class={classes.placeholder} title={alt}>
-					<slot name="placeholder">
+					{#if placeholder}{@render placeholder()}{:else}
 						<ImageIcon style={{ width: 40, height: 40 }} />
-					</slot>
+					{/if}
 				</div>
 			{/if}
 		</div>

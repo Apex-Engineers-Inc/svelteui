@@ -3,32 +3,52 @@
 	import Box from '../Box/Box.svelte';
 	import Center from '../Center/Center.svelte';
 	import { getDefaultZIndex } from './Overlay.styles';
-	import type { OverlayProps as $$OverlayProps } from './Overlay';
+	import type { OverlayProps as $$Props } from './Overlay';
 
-	interface $$Props extends $$OverlayProps {}
+	
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		opacity: $$Props['opacity'] = 0.6,
-		color: $$Props['color'] = '#fff',
-		blur: $$Props['blur'] = 0,
-		gradient: $$Props['gradient'] = '',
-		zIndex: $$Props['zIndex'] = getDefaultZIndex('modal'),
-		radius: $$Props['radius'] = 0,
-		center = false;
-	export { className as class };
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		opacity?: $$Props['opacity'];
+		color?: $$Props['color'];
+		blur?: $$Props['blur'];
+		gradient?: $$Props['gradient'];
+		zIndex?: $$Props['zIndex'];
+		radius?: $$Props['radius'];
+		center?: boolean;
+		children?: import('svelte').Snippet;
+		[key: string]: any
+	}
 
-	$: background = gradient ? { backgroundImage: gradient } : { backgroundColor: color };
-	$: baseStyles = {
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		opacity = 0.6,
+		color = '#fff',
+		blur = 0,
+		gradient = '',
+		zIndex = getDefaultZIndex('modal'),
+		radius = 0,
+		center = false,
+		children,
+		...rest
+	}: Props = $props();
+	
+
+	let background = $derived(gradient ? { backgroundImage: gradient } : { backgroundColor: color });
+	let baseStyles = $derived({
 		position: 'absolute',
 		top: 0,
 		bottom: 0,
 		left: 0,
 		right: 0,
 		zIndex
-	};
+	});
 </script>
 
 <!--
@@ -58,7 +78,7 @@ Overlays given element with div element with any color and opacity
 		bind:element
 		css={{ ...baseStyles, backdropFilter: `blur(${blur}px)` }}
 		class={className}
-		{...$$restProps}
+		{...rest}
 	>
 		<Box css={{ ...background, ...baseStyles, opacity, borderRadius: `${radius}`, ...override }} />
 	</Box>
@@ -67,15 +87,15 @@ Overlays given element with div element with any color and opacity
 		use={[[useActions, use]]}
 		bind:element
 		css={{ ...background, ...baseStyles, opacity, borderRadius: `${radius}`, ...override }}
-		{...$$restProps}
+		{...rest}
 		class={className}
 	>
 		{#if center}
 			<Center>
-				<slot />
+				{@render children?.()}
 			</Center>
 		{:else}
-			<slot />
+			{@render children?.()}
 		{/if}
 	</Box>
 {/if}

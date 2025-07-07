@@ -3,43 +3,73 @@
 	import { randomID } from '$lib/styles';
 	import { Input } from '../Input';
 	import { InputWrapper } from '../InputWrapper';
-	import type { PasswordInputProps as $$PasswordInputProps } from './PasswordInput';
+	import type { PasswordInputProps as $$Props } from './PasswordInput';
 	import { ActionIcon } from '../ActionIcon';
 	import PasswordToggleIcon from './PasswordToggleIcon.svelte';
 	import { getButtonSize, getIconSize, getRightSectionWidth } from './PasswordInput.styles';
 
-	interface $$Props extends $$PasswordInputProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		label?: $$Props['label'];
+		description?: $$Props['description'];
+		error?: $$Props['error'];
+		required?: $$Props['required'];
+		disabled?: $$Props['disabled'];
+		labelProps?: $$Props['labelProps'];
+		descriptionProps?: $$Props['descriptionProps'];
+		errorProps?: $$Props['errorProps'];
+		invalid?: $$Props['invalid'];
+		id?: $$Props['id'];
+		labelElement?: $$Props['labelElement'];
+		size?: $$Props['size'];
+		radius?: $$Props['radius'];
+		value?: $$Props['value'];
+		placeholder?: $$Props['placeholder'];
+		toggleTabIndex?: $$Props['toggleTabIndex'];
+		visibilityToggleLabel?: $$Props['visibilityToggleLabel'];
+		visible?: $$Props['visible'];
+		onVisibilityChange?: $$Props['onVisibilityChange'];
+		defaultVisible?: $$Props['defaultVisible'];
+		visibilityToggleIcon?: import('svelte').Snippet<[any]>;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		label: $$Props['label'] = '',
-		description: $$Props['description'] = null,
-		error: $$Props['error'] = null,
-		required: $$Props['required'] = false,
-		disabled: $$Props['disabled'] = false,
-		labelProps: $$Props['labelProps'] = {},
-		descriptionProps: $$Props['descriptionProps'] = {},
-		errorProps: $$Props['errorProps'] = {},
-		invalid: $$Props['invalid'] = false,
-		id: $$Props['id'] = randomID('password-input'),
-		labelElement: $$Props['labelElement'] = 'label',
-		size: $$Props['size'] = 'sm',
-		radius: $$Props['radius'] = 'sm',
-		value: $$Props['value'] = '',
-		placeholder: $$Props['placeholder'] = '',
-		toggleTabIndex: $$Props['toggleTabIndex'] = -1,
-		visibilityToggleLabel: $$Props['visibilityToggleLabel'] = undefined,
-		visible: $$Props['visible'] = undefined,
-		onVisibilityChange: $$Props['onVisibilityChange'] = undefined,
-		defaultVisible: $$Props['defaultVisible'] = undefined;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		label = '',
+		description = null,
+		error = null,
+		required = false,
+		disabled = false,
+		labelProps = {},
+		descriptionProps = {},
+		errorProps = {},
+		invalid = false,
+		id = randomID('password-input'),
+		labelElement = 'label',
+		size = 'sm',
+		radius = 'sm',
+		value = $bindable(''),
+		placeholder = '',
+		toggleTabIndex = -1,
+		visibilityToggleLabel = undefined,
+		visible = undefined,
+		onVisibilityChange = undefined,
+		defaultVisible = undefined,
+		visibilityToggleIcon,
+		...rest
+	}: Props = $props();
 
-	let uncontrolledVisible = defaultVisible !== undefined ? defaultVisible : false;
+	let uncontrolledVisible = $state(defaultVisible !== undefined ? defaultVisible : false);
 
-	$: _invalid = invalid || !!error;
-	$: _visible = visible === undefined ? uncontrolledVisible : visible;
+	let _invalid = $derived(invalid || !!error);
+	let _visible = $derived(visible === undefined ? uncontrolledVisible : visible);
 
 	const toggleVisibility = () => {
 		if (visible === undefined) {
@@ -89,13 +119,13 @@ Password input with visibility toggle
 		{radius}
 		rightSectionWidth={getRightSectionWidth(size)}
 		{disabled}
-		{...$$restProps}
+		{...rest}
 		use={[[useActions, use]]}
 		invalid={_invalid}
 		showRightSection
 		type={_visible ? 'text' : 'password'}
 	>
-		<svelte:fragment slot="rightSection">
+		{#snippet rightSection()}
 			{#if !disabled}
 				<ActionIcon
 					tabindex={toggleTabIndex}
@@ -105,11 +135,11 @@ Password input with visibility toggle
 					aria-label={visibilityToggleLabel}
 					on:click={toggleVisibility}
 				>
-					<slot name="visibilityToggleIcon" visible={_visible}>
+					{#if visibilityToggleIcon}{@render visibilityToggleIcon({ visible: _visible })}{:else}
 						<PasswordToggleIcon reveal={_visible} size={getIconSize(size)} />
-					</slot>
+					{/if}
 				</ActionIcon>
 			{/if}
-		</svelte:fragment>
+		{/snippet}
 	</Input>
 </InputWrapper>

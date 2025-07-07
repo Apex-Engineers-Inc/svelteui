@@ -1,20 +1,35 @@
 <script lang="ts">
 	import Box from '../Box/Box.svelte';
 	import useStyles from './Stack.styles';
-	import type { StackProps as $$StackProps } from './Stack';
+	import type { StackProps as $$Props } from './Stack';
 
-	interface $$Props extends $$StackProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		spacing?: $$Props['spacing'];
+		align?: $$Props['align'];
+		justify?: $$Props['justify'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		spacing: $$Props['spacing'] = 'md',
-		align: $$Props['align'] = 'stretch',
-		justify: $$Props['justify'] = 'center';
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		spacing = 'md',
+		align = 'stretch',
+		justify = 'center',
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles({ align, justify, spacing }, { name: 'Stack' }));
+	let { cx, classes, getStyles } = $derived(
+		useStyles({ align, justify, spacing }, { name: 'Stack' })
+	);
 </script>
 
 <!--
@@ -33,11 +48,6 @@ Compose elements and components in a vertical flex container.
     ```
 -->
 
-<Box
-	bind:element
-	{use}
-	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
->
-	<slot />
+<Box bind:element {use} class={cx(className, classes.root, getStyles({ css: override }))} {...rest}>
+	{@render children?.()}
 </Box>

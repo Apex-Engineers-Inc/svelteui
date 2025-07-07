@@ -1,6 +1,7 @@
+<!-- @migration-task Error while migrating Svelte code: This migration would change the name of a slot (icon to icon_1) making the component unusable -->
 <script lang="ts">
 	import useStyles from './Blockquote.styles';
-	import type { BlockquoteProps as $$BlockquoteProps } from './Blockquote';
+	import type { BlockquoteProps as $$Props } from './Blockquote';
 	import { Box } from '../Box';
 	import QuoteIcon from './QuoteIcon.svelte';
 	import { IconRenderer } from '../IconRenderer';

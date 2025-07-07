@@ -2,16 +2,27 @@
 	import useStyles from './Card.styles';
 	import { Paper } from '../Paper';
 	import { onMount } from 'svelte';
-	import type { CardProps as $$CardProps } from './Card';
+	import type { CardProps as $$Props } from './Card';
 
-	interface $$Props extends $$CardProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		padding?: $$Props['padding'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		padding: $$Props['padding'] = 'md';
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		padding = 'md',
+		children,
+		...rest
+	}: Props = $props();
 
 	/** can only get access to children at runtime */
 	onMount(() => {
@@ -28,7 +39,7 @@
 		}
 	});
 
-	$: ({ cx, classes, theme } = useStyles(null, { name: 'Card' }));
+	let { cx, classes, theme } = $derived(useStyles(null, { name: 'Card' }));
 </script>
 
 <Paper
@@ -42,7 +53,7 @@
 	}}
 	{padding}
 	{use}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </Paper>

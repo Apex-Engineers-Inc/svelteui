@@ -3,20 +3,28 @@
 	import { ActionIcon } from '../ActionIcon';
 	import type { ActionIconProps } from '../ActionIcon';
 
-	interface $$Props extends Omit<ActionIconProps, 'className' | 'use'> {
+	
+
+	interface Props {
 		size?: number;
 		className?: string;
 		role?: string;
 		title?: string;
+		element?: $$Props['element'];
+		class?: string;
+		[key: string]: any
 	}
 
-	export let element: $$Props['element'] = undefined;
-	export let size: $$Props['size'] = 15;
-	export let className: string = '';
-	export { className as class };
+	let {
+		size = 15,
+		element = $bindable(undefined),
+		class: className = '',
+		...rest
+	}: Props = $props();
+	
 </script>
 
-<ActionIcon bind:element use={[[useActions, $$restProps?.use]]} class={className} {...$$restProps}>
+<ActionIcon bind:element use={[[useActions, rest?.use]]} class={className} {...rest}>
 	<svg
 		width={size}
 		height={size}

@@ -1,18 +1,29 @@
 <script lang="ts">
 	import useStyles from './Mark.styles';
 	import { Text } from '../Text';
-	import type { MarkProps as $$MarkProps } from './Mark';
+	import type { MarkProps as $$Props } from './Mark';
 
-	interface $$Props extends $$MarkProps {}
+	interface Props {
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		root?: $$Props['root'];
+		color?: $$Props['color'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		root: $$Props['root'] = 'mark',
-		color: $$Props['color'] = 'yellow';
-	export { className as class };
+	let {
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		root = 'mark',
+		color = 'yellow',
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes } = useStyles({ color }, { override, name: 'Mark' }));
+	let { cx, classes } = $derived(useStyles({ color }, { override, name: 'Mark' }));
 </script>
 
 <!--
@@ -27,6 +38,6 @@ Highlight text within a larger body of text
     ```
 -->
 
-<Text bind:element class={cx(className, classes.root)} {root} {...$$restProps}>
-	<slot />
+<Text bind:element class={cx(className, classes.root)} {root} {...rest}>
+	{@render children?.()}
 </Text>

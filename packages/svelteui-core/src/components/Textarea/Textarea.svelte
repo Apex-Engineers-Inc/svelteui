@@ -3,34 +3,58 @@
 	import { randomID } from '$lib/styles';
 	import { Input } from '../Input';
 	import { InputWrapper } from '../InputWrapper';
-	import type { TextareaProps as $$TextareaProps } from './Textarea';
+	import type { TextareaProps as $$Props } from './Textarea';
 
-	interface $$Props extends $$TextareaProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		label?: $$Props['label'];
+		description?: $$Props['description'];
+		error?: $$Props['error'];
+		required?: $$Props['required'];
+		labelProps?: $$Props['labelProps'];
+		descriptionProps?: $$Props['descriptionProps'];
+		errorProps?: $$Props['errorProps'];
+		invalid?: $$Props['invalid'];
+		id?: $$Props['id'];
+		labelElement?: $$Props['labelElement'];
+		showRightSection?: $$Props['showRightSection'];
+		value?: $$Props['value'];
+		placeholder?: $$Props['placeholder'];
+		rightSection?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		label: $$Props['label'] = '',
-		description: $$Props['description'] = null,
-		error: $$Props['error'] = null,
-		required: $$Props['required'] = false,
-		labelProps: $$Props['labelProps'] = {},
-		descriptionProps: $$Props['descriptionProps'] = {},
-		errorProps: $$Props['errorProps'] = {},
-		invalid: $$Props['invalid'] = false,
-		id: $$Props['id'] = randomID('textarea'),
-		labelElement: $$Props['labelElement'] = 'label',
-		showRightSection: $$Props['showRightSection'] = undefined,
-		value: $$Props['value'] = '',
-		placeholder: $$Props['placeholder'] = '';
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		label = '',
+		description = null,
+		error = null,
+		required = false,
+		labelProps = {},
+		descriptionProps = {},
+		errorProps = {},
+		invalid = false,
+		id = randomID('textarea'),
+		labelElement = 'label',
+		showRightSection = undefined,
+		value = $bindable(''),
+		placeholder = '',
+		rightSection,
+		...rest
+	}: Props = $props();
 
 	// Flag that enables the override of the right section slot
 	// of the Input component only if it was provided
-	const _showRightSection =
-		showRightSection === undefined ? !!$$slots.rightSection : showRightSection;
-	$: _invalid = invalid || !!error;
+	const _showRightSection = showRightSection === undefined ? !!rightSection : showRightSection;
+	let _invalid = $derived(invalid || !!error);
+
+	const rightSection_render = $derived(rightSection);
 </script>
 
 <!--
@@ -69,13 +93,15 @@ Multiline text input.
 		{required}
 		{id}
 		{placeholder}
-		{...$$restProps}
+		{...rest}
 		use={[[useActions, use]]}
 		invalid={_invalid}
 		showRightSection={_showRightSection}
 		root="textarea"
 		multiline
 	>
-		<slot slot="rightSection" name="rightSection" />
+		{#snippet rightSection()}
+			{@render rightSection_render?.()}
+		{/snippet}
 	</Input>
 </InputWrapper>

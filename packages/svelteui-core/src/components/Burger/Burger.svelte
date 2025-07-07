@@ -3,21 +3,34 @@
 	import { UnstyledButton } from '../Button';
 	import { colorScheme } from '$lib/styles';
 	import { useActions } from '$lib/internal';
-	import type { BurgerProps as $$BurgerProps } from './Burger';
+	import type { BurgerProps as $$Props } from './Burger';
 
-	interface $$Props extends $$BurgerProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		opened?: $$Props['opened'];
+		color?: $$Props['color'];
+		size?: $$Props['size'];
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		opened: $$Props['opened'] = true,
-		color: $$Props['color'] = undefined,
-		size: $$Props['size'] = 'md';
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		opened = true,
+		color = undefined,
+		size = 'md',
+		...rest
+	}: Props = $props();
 
-	$: _color = color ? color : $colorScheme === 'dark' ? 'white' : 'black';
-	$: ({ classes, getStyles, cx } = useStyles({ color: _color, size, opened }, { name: 'Burger' }));
+	let _color = $derived(color ? color : $colorScheme === 'dark' ? 'white' : 'black');
+	let { classes, getStyles, cx } = $derived(
+		useStyles({ color: _color, size, opened }, { name: 'Burger' })
+	);
 </script>
 
 <UnstyledButton
@@ -25,7 +38,7 @@
 	use={[[useActions, use]]}
 	override={{ padding: 5 }}
 	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
+	{...rest}
 >
-	<span class={cx(classes.burger, { opened: opened })} />
+	<span class={cx(classes.burger, { opened: opened })}></span>
 </UnstyledButton>

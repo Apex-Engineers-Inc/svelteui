@@ -1,42 +1,73 @@
 <script lang="ts">
+	import { run } from 'svelte/legacy';
+
 	import useStyles from './Button.styles';
 	import { useActions } from '$lib/internal';
 	import { ButtonErrors } from './Button.errors';
 	import Error from '$lib/internal/errors/Error.svelte';
 	import Loader from '../Loader/Loader.svelte';
 	import Ripple from './Ripple.svelte';
-	import type { ButtonProps as $$ButtonProps } from './Button';
+	import type { ButtonProps as $$Props } from './Button';
 
-	interface $$Props extends $$ButtonProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		variant?: $$Props['variant'];
+		color?: $$Props['color'];
+		size?: $$Props['size'];
+		radius?: $$Props['radius'];
+		gradient?: $$Props['gradient'];
+		loaderPosition?: $$Props['loaderPosition'];
+		loaderProps?: $$Props['loaderProps'];
+		href?: $$Props['href'];
+		external?: $$Props['external'];
+		disabled?: $$Props['disabled'];
+		compact?: $$Props['compact'];
+		loading?: $$Props['loading'];
+		uppercase?: $$Props['uppercase'];
+		fullSize?: $$Props['fullSize'];
+		ripple?: $$Props['ripple'];
+		leftIcon?: import('svelte').Snippet;
+		children?: import('svelte').Snippet;
+		rightIcon?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		variant: $$Props['variant'] = 'filled',
-		color: $$Props['color'] = 'blue',
-		size: $$Props['size'] = 'sm',
-		radius: $$Props['radius'] = 'sm',
-		gradient: $$Props['gradient'] = { from: 'indigo', to: 'cyan', deg: 45 },
-		loaderPosition: $$Props['loaderPosition'] = 'left',
-		loaderProps: $$Props['loaderProps'] = {
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = $bindable({}),
+		variant = 'filled',
+		color = 'blue',
+		size = 'sm',
+		radius = 'sm',
+		gradient = { from: 'indigo', to: 'cyan', deg: 45 },
+		loaderPosition = 'left',
+		loaderProps = {
 			size: 'xs',
 			color: 'white',
 			variant: 'circle'
 		},
-		href: $$Props['href'] = null,
-		external: $$Props['external'] = false,
-		disabled: $$Props['disabled'] = false,
-		compact: $$Props['compact'] = false,
-		loading: $$Props['loading'] = false,
-		uppercase: $$Props['uppercase'] = false,
-		fullSize: $$Props['fullSize'] = false,
-		ripple: $$Props['ripple'] = false;
-	export { className as class };
+		href = null,
+		external = false,
+		disabled = false,
+		compact = false,
+		loading = false,
+		uppercase = false,
+		fullSize = false,
+		ripple = false,
+		leftIcon,
+		children,
+		rightIcon,
+		...rest
+	}: Props = $props();
 
 	// --------------Error Handling-------------------
-	let observable: boolean = false;
-	let err;
+	let observable: boolean = $state(false);
+	let err = $state();
 	if (disabled && loading) {
 		observable = true;
 		err = ButtonErrors[0];
@@ -45,20 +76,24 @@
 		observable = true;
 		err = ButtonErrors[1];
 	}
-	$: if (observable) override = { display: 'none' };
+	run(() => {
+		if (observable) override = { display: 'none' };
+	});
 	// --------------Error Handling-------------------
-	$: ({ cx, classes, getStyles } = useStyles(
-		{
-			color,
-			compact,
-			fullSize,
-			gradient,
-			radius,
-			size,
-			variant
-		},
-		{ name: 'Button' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles(
+			{
+				color,
+				compact,
+				fullSize,
+				gradient,
+				radius,
+				size,
+				variant
+			},
+			{ name: 'Button' }
+		)
+	);
 </script>
 
 <Error {observable} component="Button" code={err} />
@@ -89,19 +124,19 @@ A user can perform an immediate action by pressing a button. It's frequently use
 		role="button"
 		rel="noreferrer noopener"
 		target={external ? '_blank' : ''}
-		{...$$restProps}
+		{...rest}
 		tabindex="0"
 	>
 		{#if loading && loaderPosition === 'left'}
 			<span class="left-section">
 				<Loader variant={loaderProps.variant} size={loaderProps.size} color={loaderProps.color} />
 			</span>
-		{:else if $$slots.leftIcon}
+		{:else if leftIcon}
 			<span class="left-section">
-				<slot name="leftIcon">X</slot>
+				{#if leftIcon}{@render leftIcon()}{:else}X{/if}
 			</span>
 		{/if}
-		<slot>Button</slot>
+		{#if children}{@render children()}{:else}Button{/if}
 		{#if ripple}
 			<Ripple center={false} circle={false} />
 		{/if}
@@ -109,9 +144,9 @@ A user can perform an immediate action by pressing a button. It's frequently use
 			<span class="right-section">
 				<Loader variant={loaderProps.variant} size={loaderProps.size} color={loaderProps.color} />
 			</span>
-		{:else if $$slots.rightIcon}
+		{:else if rightIcon}
 			<span class="right-section">
-				<slot name="rightIcon">X</slot>
+				{#if rightIcon}{@render rightIcon()}{:else}X{/if}
 			</span>
 		{/if}
 	</a>
@@ -126,19 +161,19 @@ A user can perform an immediate action by pressing a button. It's frequently use
 		class:compact
 		class:uppercase
 		{disabled}
-		{...$$restProps}
+		{...rest}
 		tabindex="0"
 	>
 		{#if loading && loaderPosition === 'left'}
 			<span class="left-section">
 				<Loader variant={loaderProps.variant} size={loaderProps.size} color={loaderProps.color} />
 			</span>
-		{:else if $$slots.leftIcon}
+		{:else if leftIcon}
 			<span class="left-section">
-				<slot name="leftIcon">X</slot>
+				{#if leftIcon}{@render leftIcon()}{:else}X{/if}
 			</span>
 		{/if}
-		<slot>Button</slot>
+		{#if children}{@render children()}{:else}Button{/if}
 		{#if ripple}
 			<Ripple center={false} circle={false} />
 		{/if}
@@ -146,9 +181,9 @@ A user can perform an immediate action by pressing a button. It's frequently use
 			<span class="right-section">
 				<Loader variant={loaderProps.variant} size={loaderProps.size} color={loaderProps.color} />
 			</span>
-		{:else if $$slots.rightIcon}
+		{:else if rightIcon}
 			<span class="right-section">
-				<slot name="rightIcon">X</slot>
+				{#if rightIcon}{@render rightIcon()}{:else}X{/if}
 			</span>
 		{/if}
 	</button>

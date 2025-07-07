@@ -2,39 +2,58 @@
 	import { useActions } from '$lib/internal';
 	import { randomID } from '$lib/styles';
 	import useStyles from './Switch.styles';
-	import type { SwitchProps as $$SwitchProps } from './Switch';
+	import type { SwitchProps as $$Props } from './Switch';
 
-	interface $$Props extends $$SwitchProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		color?: $$Props['color'];
+		size?: $$Props['size'];
+		radius?: $$Props['radius'];
+		insideLabelSize?: $$Props['insideLabelSize'];
+		transitionFunction?: $$Props['transitionFunction'];
+		id?: $$Props['id'];
+		label?: $$Props['label'];
+		onLabel?: $$Props['onLabel'];
+		offLabel?: $$Props['offLabel'];
+		disabled?: $$Props['disabled'];
+		checked?: $$Props['checked'];
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		color: $$Props['color'] = 'blue',
-		size: $$Props['size'] = 'sm',
-		radius: $$Props['radius'] = 'xl',
-		insideLabelSize: $$Props['insideLabelSize'] = undefined,
-		transitionFunction: $$Props['transitionFunction'] = 'linear',
-		id: $$Props['id'] = randomID(),
-		label: $$Props['label'] = '',
-		onLabel: $$Props['onLabel'] = '',
-		offLabel: $$Props['offLabel'] = '',
-		disabled: $$Props['disabled'] = false,
-		checked: $$Props['checked'] = false;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		color = 'blue',
+		size = 'sm',
+		radius = 'xl',
+		insideLabelSize = undefined,
+		transitionFunction = 'linear',
+		id = randomID(),
+		label = '',
+		onLabel = '',
+		offLabel = '',
+		disabled = false,
+		checked = $bindable(false)
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{
-			color,
-			offLabel,
-			onLabel,
-			insideLabelSize,
-			radius,
-			size,
-			transitionFunction
-		},
-		{ name: 'Switch' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles(
+			{
+				color,
+				offLabel,
+				onLabel,
+				insideLabelSize,
+				radius,
+				size,
+				transitionFunction
+			},
+			{ name: 'Switch' }
+		)
+	);
 </script>
 
 <!--

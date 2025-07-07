@@ -2,18 +2,29 @@
 	import useStyles from './UnstyledButton.styles';
 	import { Box } from '../../Box';
 	import { useActions } from '$lib/internal';
-	import type { UnstyledButtonProps as $$UnstyledButtonProps } from './UnstyledButton';
+	import type { UnstyledButtonProps as $$Props } from './UnstyledButton';
 
-	interface $$Props extends $$UnstyledButtonProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		root?: $$Props['root'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		root: $$Props['root'] = 'button';
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		root = 'button',
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(null, { name: 'UnstyledButton' }));
+	let { cx, classes, getStyles } = $derived(useStyles(null, { name: 'UnstyledButton' }));
 </script>
 
 <Box
@@ -21,7 +32,7 @@
 	use={[[useActions, use]]}
 	class={cx(className, classes.root, getStyles({ css: override }))}
 	{root}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </Box>

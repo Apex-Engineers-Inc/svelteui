@@ -1,22 +1,33 @@
 <script lang="ts">
 	import { io } from '@svelteuidev/composables';
 	import { Box } from '../Box';
-	import type { ObserverRenderProps as $$ObserverRenderProps } from './ObserverRender';
+	import type { ObserverRenderProps as $$Props } from './ObserverRender';
 
-	interface $$Props extends $$ObserverRenderProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		options?: $$Props['options'];
+		children?: import('svelte').Snippet<[any]>;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		options: $$Props['options'] = {};
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		options = {},
+		children,
+		...rest
+	}: Props = $props();
 
-	let visible: boolean = null;
-	let entry: IntersectionObserverEntry = null;
-	let scrollDirection = null;
-	let observer = null;
-	let node = null;
+	let visible: boolean = $state(null);
+	let entry: IntersectionObserverEntry = $state(null);
+	let scrollDirection = $state(null);
+	let observer = $state(null);
+	let node = $state(null);
 </script>
 
 <Box
@@ -24,7 +35,7 @@
 	use={[[io, options], ...use]}
 	class={className}
 	css={{ ...override }}
-	{...$$restProps}
+	{...rest}
 	on:change={(event) => {
 		const {
 			inView,
@@ -73,5 +84,5 @@
 		node = _node;
 	}}
 >
-	<slot {visible} {entry} {scrollDirection} {observer} {node} />
+	{@render children?.({ visible, entry, scrollDirection, observer, node })}
 </Box>

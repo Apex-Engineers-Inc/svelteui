@@ -3,30 +3,49 @@
 	import { randomID } from '$lib/styles';
 	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
-	import type { ChipProps as $$ChipProps } from './Chip';
+	import type { ChipProps as $$Props } from './Chip';
 
-	interface $$Props extends $$ChipProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		color?: $$Props['color'];
+		id?: $$Props['id'];
+		disabled?: $$Props['disabled'];
+		value?: $$Props['value'];
+		checked?: $$Props['checked'];
+		label?: $$Props['label'];
+		radius?: $$Props['radius'];
+		size?: $$Props['size'];
+		variant?: $$Props['variant'];
+		transitionDuration?: $$Props['transitionDuration'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		color: $$Props['color'] = 'blue',
-		id: $$Props['id'] = randomID(),
-		disabled: $$Props['disabled'] = false,
-		value: $$Props['value'] = undefined,
-		checked: $$Props['checked'] = false,
-		label: $$Props['label'] = '',
-		radius: $$Props['radius'] = 'xl',
-		size: $$Props['size'] = 'sm',
-		variant: $$Props['variant'] = 'outline',
-		transitionDuration: $$Props['transitionDuration'] = 100;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		color = 'blue',
+		id = randomID(),
+		disabled = false,
+		value = undefined,
+		checked = $bindable(false),
+		label = '',
+		radius = 'xl',
+		size = 'sm',
+		variant = 'outline',
+		transitionDuration = 100,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{ color, radius, size, transitionDuration },
-		{ name: 'Chip' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles({ color, radius, size, transitionDuration }, { name: 'Chip' })
+	);
 </script>
 
 <!--
@@ -44,11 +63,7 @@ A picker for one or more options.
     ```
 -->
 
-<Box
-	bind:element
-	class={cx(className, classes.root, getStyles({ css: override }))}
-	{...$$restProps}
->
+<Box bind:element class={cx(className, classes.root, getStyles({ css: override }))} {...rest}>
 	<div class={classes.inputContainer}>
 		<input
 			use:useActions={use}
@@ -80,6 +95,6 @@ A picker for one or more options.
 				</svg>
 			</div>
 		{/if}
-		<slot>{label}</slot>
+		{#if children}{@render children()}{:else}{label}{/if}
 	</label>
 </Box>

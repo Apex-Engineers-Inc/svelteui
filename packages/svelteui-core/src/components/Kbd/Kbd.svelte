@@ -1,17 +1,27 @@
 <script lang="ts">
 	import useStyles from './Kbd.styles';
 	import { Box } from '../Box';
-	import type { KbdProps as $$KbdProps } from './Kbd';
+	import type { KbdProps as $$Props } from './Kbd';
 
-	interface $$Props extends $$KbdProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {};
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(null, { name: 'Kbd' }));
+	let { cx, classes, getStyles } = $derived(useStyles(null, { name: 'Kbd' }));
 </script>
 
 <Box
@@ -19,7 +29,7 @@
 	root="kbd"
 	class={cx(className, classes.root, getStyles({ css: override }))}
 	{use}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </Box>

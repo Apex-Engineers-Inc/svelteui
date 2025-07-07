@@ -1,33 +1,48 @@
 <script lang="ts">
 	import { Box } from '../Box';
 	import useStyles from './Skeleton.styles';
-	import type { SkeletonProps as $$SkeletonProps } from './Skeleton';
+	import type { SkeletonProps as $$Props } from './Skeleton';
 
-	interface $$Props extends $$SkeletonProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		visible?: $$Props['visible'];
+		height?: $$Props['height'];
+		width?: $$Props['width'];
+		circle?: $$Props['circle'];
+		radius?: $$Props['radius'];
+		animate?: $$Props['animate'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		visible: $$Props['visible'] = true,
-		height: $$Props['height'] = 'auto',
-		width: $$Props['width'] = 100,
-		circle: $$Props['circle'] = null,
-		radius: $$Props['radius'] = null,
-		animate: $$Props['animate'] = true;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		visible = true,
+		height = 'auto',
+		width = 100,
+		circle = null,
+		radius = null,
+		animate = true,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(
-		{ animate, circle, height, radius, width },
-		{ name: 'Skeleton' }
-	));
+	let { cx, classes, getStyles } = $derived(
+		useStyles({ animate, circle, height, radius, width }, { name: 'Skeleton' })
+	);
 </script>
 
 <Box
 	bind:element
 	class={cx(className, classes.root, { visible }, getStyles({ css: override }))}
 	{use}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </Box>

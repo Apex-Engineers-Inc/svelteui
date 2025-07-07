@@ -1,17 +1,27 @@
 <script lang="ts">
 	import { useActions } from '$lib/internal';
 	import { portal } from '@svelteuidev/composables';
-	import type { PortalProps as $$PortalProps } from './Portal';
+	import type { PortalProps as $$Props } from './Portal';
 
-	interface $$Props extends $$PortalProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		target?: $$Props['target'];
+		position?: $$Props['position'];
+		zIndex?: $$Props['zIndex'];
+		children?: import('svelte').Snippet;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		target: $$Props['target'] = 'body',
-		position: $$Props['position'] = 'relative',
-		zIndex: $$Props['zIndex'] = 1;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		target = 'body',
+		position = 'relative',
+		zIndex = 1,
+		children
+	}: Props = $props();
 </script>
 
 <div
@@ -22,5 +32,5 @@
 	hidden
 	style="position: {position}; zIndex: {zIndex};"
 >
-	<slot />
+	{@render children?.()}
 </div>

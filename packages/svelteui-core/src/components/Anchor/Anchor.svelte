@@ -1,30 +1,53 @@
 <script lang="ts">
 	import useStyles from './Anchor.styles';
 	import Text from '../Text/Text.svelte';
-	import type { AnchorProps as $$AnchorProps } from './Anchor';
+	import type { AnchorProps as $$Props } from './Anchor';
 
-	interface $$Props extends $$AnchorProps {}
+	interface Props {
+		use?: $$Props['use'];
+		element?: $$Props['element'];
+		class?: $$Props['className'];
+		override?: $$Props['override'];
+		root?: $$Props['root'];
+		align?: $$Props['align'];
+		color?: $$Props['color'];
+		transform?: $$Props['transform'];
+		weight?: $$Props['weight'];
+		gradient?: $$Props['gradient'];
+		inline?: $$Props['inline'];
+		lineClamp?: $$Props['lineClamp'];
+		underline?: $$Props['underline'];
+		inherit?: $$Props['inherit'];
+		href?: $$Props['href'];
+		tracking?: $$Props['tracking'];
+		external?: $$Props['external'];
+		children?: import('svelte').Snippet;
+		[key: string]: any;
+	}
 
-	export let use: $$Props['use'] = [],
-		element: $$Props['element'] = undefined,
-		className: $$Props['className'] = '',
-		override: $$Props['override'] = {},
-		root: $$Props['root'] = 'a',
-		align: $$Props['align'] = 'left',
-		color: $$Props['color'] = 'blue',
-		transform: $$Props['transform'] = 'none',
-		weight: $$Props['weight'] = 'normal',
-		gradient: $$Props['gradient'] = { from: 'indigo', to: 'cyan', deg: 45 },
-		inline: $$Props['inline'] = true,
-		lineClamp: $$Props['lineClamp'] = undefined,
-		underline: $$Props['underline'] = true,
-		inherit: $$Props['inherit'] = false,
-		href: $$Props['href'] = '',
-		tracking: $$Props['tracking'] = 'normal',
-		external: $$Props['external'] = false;
-	export { className as class };
+	let {
+		use = [],
+		element = $bindable(undefined),
+		class: className = '',
+		override = {},
+		root = 'a',
+		align = 'left',
+		color = 'blue',
+		transform = 'none',
+		weight = 'normal',
+		gradient = { from: 'indigo', to: 'cyan', deg: 45 },
+		inline = true,
+		lineClamp = undefined,
+		underline = true,
+		inherit = false,
+		href = '',
+		tracking = 'normal',
+		external = false,
+		children,
+		...rest
+	}: Props = $props();
 
-	$: ({ cx, classes, getStyles } = useStyles(null, { name: 'Anchor' }));
+	let { cx, classes, getStyles } = $derived(useStyles(null, { name: 'Anchor' }));
 </script>
 
 <!--
@@ -61,7 +84,7 @@ root.
 	{tracking}
 	target={external ? '_blank' : null}
 	rel={external ? 'noreferrer noopener' : null}
-	{...$$restProps}
+	{...rest}
 >
-	<slot>Enter some anchor text</slot>
+	{#if children}{@render children()}{:else}Enter some anchor text{/if}
 </Text>

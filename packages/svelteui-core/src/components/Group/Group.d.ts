@@ -10,5 +10,4 @@ export interface GroupProps extends DefaultProps, HTMLAttributes<HTMLElement> {
 	spacing?: SvelteUINumberSize;
 	direction?: 'row' | 'column';
 	align?: CSS['alignItems'];
-	children?: number;
 }

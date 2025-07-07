@@ -1,4 +1,4 @@
-<script context="module">
+<script module>
 	function isTouchEvent(e) {
 		return e.constructor.name === 'TouchEvent';
 	}
@@ -95,7 +95,7 @@
 		});
 	};
 	const onMouseDown = function (e) {
-		// Trigger on left click only
+		
 		if (e.button === 0) {
 			startRipple(e.type, e);
 		}
@@ -109,12 +109,17 @@
 	};
 </script>
 
-<script>
-	export let center = false;
-	export let circle = false;
-	export let color = 'currentColor';
+<script lang="ts">
 	import { tick, onMount, onDestroy } from 'svelte';
-	let el;
+	interface Props {
+		// Trigger on left click only
+		center?: boolean;
+		circle?: boolean;
+		color?: string;
+	}
+
+	let { center = false, circle = false, color = 'currentColor' }: Props = $props();
+	let el = $state();
 	let trigEl;
 	onMount(async () => {
 		await tick();
@@ -148,7 +153,7 @@
 	});
 </script>
 
-<div class="ripple" bind:this={el} />
+<div class="ripple" bind:this={el}></div>
 
 <style>
 	.ripple {
