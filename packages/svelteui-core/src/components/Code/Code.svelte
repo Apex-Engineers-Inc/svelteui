@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { clipboard, useActions, createEventForwarder } from '$lib/internal';
+	import { clipboard, useActions } from '$lib/internal';
 	import Error from '$lib/internal/errors/Error.svelte';
 	import useStyles from './Code.styles';
 	import CopyIcon from './CopyIcon.svelte';
@@ -20,9 +19,6 @@
 		message: $$Props['message'] = 'Copied',
 		noMono: $$Props['noMono'] = false;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	/** Copy logic */
 	let copied = false;
@@ -75,7 +71,6 @@ Inline or block code without syntax highlighting
 	<pre
 		bind:this={element}
 		use:useActions={use}
-		use:forwardEvents
 		class={cx(className, classes.root, getStyles({ css: override }))}
 		{...$$restProps}>
 		{#if !noMono}
@@ -93,7 +88,6 @@ Inline or block code without syntax highlighting
 	<code
 		bind:this={element}
 		use:useActions={use}
-		use:forwardEvents
 		class={cx(className, classes.root, getStyles({ css: override }))}
 		{...$$restProps}
 	>

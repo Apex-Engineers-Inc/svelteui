@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder } from '$lib/internal';
 	import { Box } from '../../Box';
 	import { UnstyledButton } from '../../Button';
 	import { Collapse } from '../../Collapse';
@@ -20,8 +18,6 @@
 		chevron: $$Props['chevron'] = undefined,
 		disabled: $$Props['disabled'] = false;
 	export { className as class };
-
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	const ctx: AccordionContext = getContext(key);
 
@@ -71,7 +67,7 @@ Item of an accordion.
 		aria-expanded={$ctx.isItemActive(value)}
 		aria-controls={$ctx.getControlsId(value)}
 		on:click={onClick}
-		use={[forwardEvents]}
+		{use}
 	>
 		<span
 			class={classes.chevron}

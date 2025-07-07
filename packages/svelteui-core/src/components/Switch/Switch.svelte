@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { randomID } from '$lib/styles';
 	import useStyles from './Switch.styles';
 	import type { SwitchProps as $$SwitchProps } from './Switch';
@@ -23,9 +22,6 @@
 		disabled: $$Props['disabled'] = false,
 		checked: $$Props['checked'] = false;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: ({ cx, classes, getStyles } = useStyles(
 		{
@@ -59,7 +55,6 @@ A user can use this component to enable/disable something, normally used for boo
 		{id}
 		{disabled}
 		use:useActions={use}
-		use:forwardEvents
 		bind:checked
 		type="checkbox"
 		class={cx(className, classes.input, getStyles({ css: override }))}

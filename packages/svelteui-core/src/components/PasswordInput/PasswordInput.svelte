@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { randomID } from '$lib/styles';
 	import { Input } from '../Input';
 	import { InputWrapper } from '../InputWrapper';
@@ -38,9 +37,6 @@
 	export { className as class };
 
 	let uncontrolledVisible = defaultVisible !== undefined ? defaultVisible : false;
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: _invalid = invalid || !!error;
 	$: _visible = visible === undefined ? uncontrolledVisible : visible;
@@ -94,7 +90,7 @@ Password input with visibility toggle
 		rightSectionWidth={getRightSectionWidth(size)}
 		{disabled}
 		{...$$restProps}
-		use={[forwardEvents, [useActions, use]]}
+		use={[[useActions, use]]}
 		invalid={_invalid}
 		showRightSection
 		type={_visible ? 'text' : 'password'}

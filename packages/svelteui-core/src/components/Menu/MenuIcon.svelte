@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import { ActionIcon } from '../ActionIcon';
 	import type { ActionIconProps } from '../ActionIcon';
 
@@ -15,16 +14,9 @@
 	export let size: $$Props['size'] = 15;
 	export let className: string = '';
 	export { className as class };
-
-	const forwardEvents = createEventForwarder(get_current_component());
 </script>
 
-<ActionIcon
-	bind:element
-	use={[forwardEvents, [useActions, $$restProps?.use]]}
-	class={className}
-	{...$$restProps}
->
+<ActionIcon bind:element use={[[useActions, $$restProps?.use]]} class={className} {...$$restProps}>
 	<svg
 		width={size}
 		height={size}

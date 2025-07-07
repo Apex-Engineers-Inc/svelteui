@@ -1,8 +1,7 @@
 <script lang="ts">
 	import useStyles from './ActionIcon.styles';
 	import { ActionIconErrors } from './ActionIcon.errors';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import { Box } from '../Box';
 	import Loader from '../Loader/Loader.svelte';
 	import Error from '$lib/internal/errors/Error.svelte';
@@ -29,8 +28,6 @@
 		href: $$Props['href'] = '',
 		external: $$Props['external'] = false;
 	export { className as class };
-
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	// --------------Error Handling-------------------
 	let observable: boolean = false;
@@ -63,7 +60,7 @@ Icon button to indicate secondary action.
 
 <Box
 	bind:element
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	tabindex={0}
 	disabled={disabled || loading}
 	class={cx(

@@ -1,8 +1,7 @@
 <script lang="ts">
 	import useStyles from './Chip.styles.js';
 	import { randomID } from '$lib/styles';
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
 	import type { ChipProps as $$ChipProps } from './Chip';
 
@@ -23,9 +22,6 @@
 		variant: $$Props['variant'] = 'outline',
 		transitionDuration: $$Props['transitionDuration'] = 100;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: ({ cx, classes, getStyles } = useStyles(
 		{ color, radius, size, transitionDuration },
@@ -56,7 +52,6 @@ A picker for one or more options.
 	<div class={classes.inputContainer}>
 		<input
 			use:useActions={use}
-			use:forwardEvents
 			bind:checked
 			class={classes.input}
 			class:disabled

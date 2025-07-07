@@ -3,8 +3,7 @@
 </script>
 
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { randomID } from '$lib/styles';
 	import Box from '../Box/Box.svelte';
 	import type { RadioProps as $$RadioProps } from './Radio';
@@ -28,9 +27,6 @@
 		name: $$Props['name'] = '',
 		group: $$Props['group'] = undefined;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: ({ cx, classes, getStyles } = useStyles(
 		{ color, size, labelDirection, error },
@@ -71,7 +67,6 @@ Radio component.
 					{id}
 					{...$$restProps}
 					use:useActions={use}
-					use:forwardEvents
 				/>
 			{:else}
 				<input
@@ -86,7 +81,6 @@ Radio component.
 					{...$$restProps}
 					on:change={onChange}
 					use:useActions={use}
-					use:forwardEvents
 				/>
 			{/if}
 			<div class={classes.inner} aria-hidden />

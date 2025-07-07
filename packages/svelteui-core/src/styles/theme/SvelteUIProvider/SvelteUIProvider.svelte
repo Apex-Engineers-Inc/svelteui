@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
 	import { setContext } from 'svelte';
-	import { beforeUpdate, get_current_component } from 'svelte/internal';
+	import { beforeUpdate } from 'svelte';
 	import { mergeTheme } from '../';
 	import { useSvelteUITheme } from './default-theme';
 	import { colorScheme } from './svelteui.stores';
 	import { key, useSvelteUIThemeContext } from './svelteui.provider';
 	import { createStyles, dark, NormalizeCSS, SvelteUIGlobalCSS } from '../../index';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import type { SvelteUITheme } from '../types';
 	import type { SvelteUIProviderProps as $$SvelteUIProviderProps } from './svelteui.provider';
 	import type { SvelteUIProviderContextType } from './svelteui.provider';
@@ -34,7 +34,6 @@
 
 	const ctx = useSvelteUIThemeContext();
 	const useStyles = createStyles(() => ({ root: {} }));
-	const forwardEvents = createEventForwarder(get_current_component());
 	const DEFAULT_THEME = useSvelteUITheme();
 
 	let currentTheme: string | null = null;
@@ -66,7 +65,6 @@
 	id="SVELTEUI_PROVIDER"
 	bind:this={element}
 	use:useActions={use}
-	use:forwardEvents
 	class={cx(className, classes.root, currentTheme)}
 	{...$$restProps}
 >

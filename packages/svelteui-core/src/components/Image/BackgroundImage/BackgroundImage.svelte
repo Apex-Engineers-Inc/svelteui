@@ -1,7 +1,6 @@
 <script lang="ts">
 	import useStyles from './BackgroundImage.styles';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import type { BackgroundImageProps as $$BackgroundImageProps } from './BackgroundImage';
 
 	interface $$Props extends $$BackgroundImageProps {}
@@ -15,9 +14,6 @@
 		width: $$Props['width'] = undefined,
 		height: $$Props['height'] = undefined;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: ({ cx, classes, getStyles } = useStyles(
 		{ height, radius, src, width },
@@ -47,7 +43,6 @@ BackgroundImage component can be used to add any content on image. It is useful 
 
 <div
 	bind:this={element}
-	use:forwardEvents
 	use:useActions={use}
 	class={cx(className, classes.root, getStyles({ css: override }))}
 >

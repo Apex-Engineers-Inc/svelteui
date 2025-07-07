@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
 	import IconRenderer from '../IconRenderer/IconRenderer.svelte';
 	import useStyles from './Input.styles';
@@ -36,9 +35,6 @@
 		resize: $$Props['resize'] = 'none',
 		noPointerEventsRightSection: $$Props['noPointerEventsRightSection'] = false;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	/** workaround for root type errors, this should be replaced by a better type system */
 	type Input = 'input' | 'select' | 'textarea' | 'datalist';
@@ -127,7 +123,6 @@ Base component to create custom inputs
 			{type}
 			bind:this={element}
 			use:useActions={use}
-			use:forwardEvents
 			{required}
 			{disabled}
 			{id}
@@ -179,7 +174,6 @@ Base component to create custom inputs
 			on:change={onChange}
 			on:input={onInput}
 			use:useActions={use}
-			use:forwardEvents
 			{...$$restProps}
 		>
 			<slot />
@@ -189,7 +183,7 @@ Base component to create custom inputs
 			this={root}
 			bind:element
 			bind:value
-			use={[forwardEvents, [useActions, use]]}
+			use={[[useActions, use]]}
 			aria-invalid={invalid}
 			class={cx(
 				className,

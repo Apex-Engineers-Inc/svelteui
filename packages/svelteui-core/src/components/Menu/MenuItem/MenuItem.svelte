@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { getContext } from 'svelte';
-	import { get_current_component } from 'svelte/internal';
 	import type { Writable } from 'svelte/store';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { Box } from '../../Box';
 	import IconRenderer from '../../IconRenderer/IconRenderer.svelte';
 	import { ctx } from '../Menu.svelte';
@@ -25,8 +24,7 @@
 	export { className as class };
 
 	const state: Writable<MenuContextValue> = getContext(ctx);
-	const forwardEvents = createEventForwarder(get_current_component());
-	const castKeyboardEvent = <T = KeyboardEvent>(event): T => event;
+	const castKeyboardEvent = <T = KeyboardEvent,>(event): T => event;
 
 	$: itemIndex = getContextItemIndex(
 		{ elementSelector: '.svelteui-MenuItem-root', parentClassName: 'svelteui-Menu-body' },
@@ -38,7 +36,7 @@
 
 <Box
 	{root}
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	bind:element
 	type="button"
 	role="menuitem"

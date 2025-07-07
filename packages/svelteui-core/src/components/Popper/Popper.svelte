@@ -2,8 +2,8 @@
 	import useStyles from './Popper.styles';
 	import { calculateArrowPlacement } from './Popper.styles';
 	import { arrow, autoUpdate, computePosition, offset, flip, shift } from '@floating-ui/dom';
-	import { get_current_component, onDestroy } from 'svelte/internal';
-	import { createEventForwarder, getTransition, useActions } from '$lib/internal';
+	import { onDestroy } from 'svelte';
+	import { getTransition, useActions } from '$lib/internal';
 	import type { Placement } from '@floating-ui/dom';
 	import type { PopperProps as $$PopperProps } from './Popper';
 
@@ -31,8 +31,6 @@
 
 	let cleanup = () => {};
 	let arrowElement;
-
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	onDestroy(() => {
 		cleanup();
@@ -134,7 +132,6 @@ and placement options.
 	<div
 		bind:this={element}
 		use:useActions={use}
-		use:forwardEvents
 		class={cx(className, classes.root, getStyles({ css: override }))}
 		in:_transition|global={transitionOptions}
 		out:_exitTransition|global={exitTransitionOptions}

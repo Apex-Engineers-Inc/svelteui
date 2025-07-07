@@ -1,7 +1,6 @@
 <script lang="ts">
 	import useStyles from './Badge.styles';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
 	import type { BadgeProps as $$BadgeProps } from './Badge';
 
@@ -18,9 +17,6 @@
 		radius: $$Props['radius'] = 'xl',
 		fullWidth: $$Props['fullWidth'] = false;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: ({ cx, classes } = useStyles(
 		{
@@ -53,7 +49,7 @@ Display badge, pill or tag
     ```
 -->
 <Box
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	bind:element
 	class={cx(className, variant, classes.root)}
 	{...$$restProps}

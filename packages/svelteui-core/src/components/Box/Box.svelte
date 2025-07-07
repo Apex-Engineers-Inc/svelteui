@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { getSystemStyles } from './context';
 	import { css as _css, useSvelteUITheme, useSvelteUIThemeContext } from '$lib/styles';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import type { BoxProps as $$BoxProps } from './Box';
 
 	interface $$Props extends $$BoxProps {}
@@ -28,8 +27,6 @@
 		pr: $$Props['pr'] = undefined;
 	export { className as class };
 
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 	/** workaround for root type errors, this should be replaced by a better type system */
 	const castRoot = () => root as string;
 	const theme = useSvelteUIThemeContext()?.theme || useSvelteUITheme();
@@ -82,7 +79,6 @@ Add inline styles to any element or component with sx.
 	<svelte:element
 		bind:this={element}
 		this={castRoot()}
-		use:forwardEvents
 		use:useActions={use}
 		class="{className} {BoxStyles({ css: {...getCSSStyles(theme), ...systemStyles} })}"
 		{...$$restProps}
@@ -93,7 +89,7 @@ Add inline styles to any element or component with sx.
 	<svelte:component
 		this={root}
 		bind:this={element}
-		use={[forwardEvents, [useActions, use]]}
+		use={[[useActions, use]]}
 		class="{className} {BoxStyles({ css: { ...getCSSStyles(theme), ...systemStyles } })}"
 		{...$$restProps}
 	>
@@ -102,7 +98,6 @@ Add inline styles to any element or component with sx.
 {:else}
 	<div
 		bind:this={element}
-		use:forwardEvents
 		use:useActions={use}
 		class="{className} {BoxStyles({ css: { ...getCSSStyles(theme), ...systemStyles } })}"
 		{...$$restProps}

@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { randomID } from '$lib/styles';
 	import { Input } from '../Input';
 	import { InputWrapper } from '../InputWrapper';
@@ -26,9 +25,6 @@
 		value: $$Props['value'] = '',
 		placeholder: $$Props['placeholder'] = '';
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	// Flag that enables the override of the right section slot
 	// of the Input component only if it was provided
@@ -74,7 +70,7 @@ Multiline text input.
 		{id}
 		{placeholder}
 		{...$$restProps}
-		use={[forwardEvents, [useActions, use]]}
+		use={[[useActions, use]]}
 		invalid={_invalid}
 		showRightSection={_showRightSection}
 		root="textarea"

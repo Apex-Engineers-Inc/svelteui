@@ -2,8 +2,7 @@
 	import useStyles from './Burger.styles';
 	import { UnstyledButton } from '../Button';
 	import { colorScheme } from '$lib/styles';
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import type { BurgerProps as $$BurgerProps } from './Burger';
 
 	interface $$Props extends $$BurgerProps {}
@@ -17,16 +16,13 @@
 		size: $$Props['size'] = 'md';
 	export { className as class };
 
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
-
 	$: _color = color ? color : $colorScheme === 'dark' ? 'white' : 'black';
 	$: ({ classes, getStyles, cx } = useStyles({ color: _color, size, opened }, { name: 'Burger' }));
 </script>
 
 <UnstyledButton
 	bind:element
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	override={{ padding: 5 }}
 	class={cx(className, classes.root, getStyles({ css: override }))}
 	{...$$restProps}

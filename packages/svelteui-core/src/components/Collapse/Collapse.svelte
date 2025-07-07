@@ -1,7 +1,5 @@
 <script lang="ts">
 	import { fade, slide } from 'svelte/transition';
-	import { createEventForwarder } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
 	import { Box } from '../Box';
 	import type { CollapseProps as $$CollapseProps } from './Collapse';
 
@@ -16,8 +14,6 @@
 		transitionDuration: $$Props['transitionDuration'] = 200,
 		slideTransitionOptions: $$Props['slideTransitionOptions'] = { duration: transitionDuration };
 	export { className as class };
-
-	const forwardEvents = createEventForwarder(get_current_component());
 </script>
 
 <!--
@@ -35,12 +31,12 @@ A section that collapses with animation, occupying no space on the page.
 	{#if open}
 		{#if animateOpacity}
 			<div transition:fade|global={{ duration: transitionDuration }}>
-				<div transition:slide|global={slideTransitionOptions} use:forwardEvents>
+				<div transition:slide|global={slideTransitionOptions}>
 					<slot />
 				</div>
 			</div>
 		{:else}
-			<div transition:slide|global={slideTransitionOptions} use:forwardEvents>
+			<div transition:slide|global={slideTransitionOptions}>
 				<slot />
 			</div>
 		{/if}

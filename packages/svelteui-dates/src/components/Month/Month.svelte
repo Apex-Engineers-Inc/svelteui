@@ -7,8 +7,7 @@
 	import { getDayProps } from './get-day-props/get-day-props';
 	import { upperFirst } from '@svelteuidev/composables';
 	import { getMonthDays, getWeekdaysNames, isSameDate } from '../../utils';
-	import { createEventForwarder, useActions } from '@svelteuidev/core';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '@svelteuidev/core';
 	import type { MonthProps as $$MonthProps } from './Month.styles';
 
 	export let use: $$MonthProps['use'] = [],
@@ -43,9 +42,7 @@
 		isDateLastInRange: $$MonthProps['isDateLastInRange'] = no;
 	export { className as class };
 
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
-	const castType = <T>(value: unknown) => value as T;
+	const castType = <T,>(value: unknown) => value as T;
 	const days = getMonthDays(month, firstDayOfWeek);
 	const hasValue = Array.isArray(value)
 		? value.every((item) => item instanceof Date)
@@ -60,7 +57,7 @@
 
 <Box
 	bind:element
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	root="table"
 	class={cx(className, classes.root)}
 	{...$$restProps}

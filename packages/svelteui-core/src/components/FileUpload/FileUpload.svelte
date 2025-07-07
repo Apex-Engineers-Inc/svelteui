@@ -10,8 +10,8 @@
 		FileUploadProps as $$FileUploadProps,
 		FileUploadEvents as $$FileUploadEvents
 	} from './FileUpload';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { createEventDispatcher, get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
+	import { createEventDispatcher } from 'svelte';
 	import { randomID } from '$lib/styles';
 	import IconRenderer from '../IconRenderer/IconRenderer.svelte';
 	import Button from '../Button/Button.svelte';
@@ -47,13 +47,6 @@
 
 	let fileUploadComponent = undefined;
 	const dispatch = createEventDispatcher();
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component(), [
-		'selected',
-		'removed',
-		'reset'
-	]);
 
 	function onFileSelected(e) {
 		let localFile: FileItem[] = [];
@@ -104,7 +97,6 @@
 				onFileSelected(target);
 			}}
 			use:useActions={use}
-			use:forwardEvents
 		/>
 	</div>
 

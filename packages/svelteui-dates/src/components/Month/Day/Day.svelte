@@ -2,8 +2,7 @@
 	import useStyles from './Day.styles';
 	import { getDayTabIndex } from './get-day-tab-index/get-day-tab-index';
 	import { getDayAutofocus } from './get-day-autofocus/get-day-autofocus';
-	import { createEventForwarder, useActions } from '@svelteuidev/core';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '@svelteuidev/core';
 	import type { DayProps as $$DayProps } from './Day.styles';
 
 	export let use: $$DayProps['use'] = [],
@@ -29,9 +28,6 @@
 		renderDay: $$DayProps['renderDay'] = undefined;
 	export { className as class };
 
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
-
 	$: ({ cx, classes } = useStyles(
 		{ size, fullWidth, primaryColor, hideOutsideDates },
 		{ override }
@@ -42,7 +38,6 @@
 	type="button"
 	bind:this={element}
 	use:useActions={use}
-	use:forwardEvents
 	on:mouseenter={(event) => onMouseEnter(value, event)}
 	tabindex={getDayTabIndex({ focusable, hasValue, selected, firstInMonth })}
 	data-autofocus={getDayAutofocus({ hasValue, selected, firstInMonth })}

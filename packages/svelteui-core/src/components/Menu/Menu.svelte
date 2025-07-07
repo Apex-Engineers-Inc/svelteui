@@ -12,8 +12,7 @@
 	import { Paper } from '../Paper';
 	import { MenuIcon } from './index';
 	import { clickoutside, useHash } from '@svelteuidev/composables';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import type { Writable } from 'svelte/store';
 	import type { MenuContextValue } from './Menu.context';
 	import type { MenuProps as $$MenuProps, MenuEvents as $$MenuEvents } from './Menu';
@@ -86,8 +85,7 @@
 		callback: () => _opened && !external && handleClose()
 	};
 	const uuid: string = useHash(menuId);
-	const forwardEvents = createEventForwarder(get_current_component(), ['open', 'close']);
-	const castKeyboardEvent = <T = KeyboardEvent>(event): T => event;
+	const castKeyboardEvent = <T = KeyboardEvent,>(event): T => event;
 
 	// can be turned into an action
 	const focusReference = () => window.setTimeout(() => referenceElement?.focus(), 0);
@@ -208,7 +206,10 @@
 
 <Box
 	bind:element
-	use={[forwardEvents, [useActions, use], [clickoutside, clickOutsideParams]]}
+	use={[
+		[useActions, use],
+		[clickoutside, clickOutsideParams]
+	]}
 	class={cx(classes.root, className)}
 	on:mouseleave={handleMouseLeave}
 	on:mouseenter={handleMouseEnter}

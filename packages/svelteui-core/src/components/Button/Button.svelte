@@ -1,7 +1,6 @@
 <script lang="ts">
 	import useStyles from './Button.styles';
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { ButtonErrors } from './Button.errors';
 	import Error from '$lib/internal/errors/Error.svelte';
 	import Loader from '../Loader/Loader.svelte';
@@ -34,9 +33,6 @@
 		fullSize: $$Props['fullSize'] = false,
 		ripple: $$Props['ripple'] = false;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	// --------------Error Handling-------------------
 	let observable: boolean = false;
@@ -84,7 +80,6 @@ A user can perform an immediate action by pressing a button. It's frequently use
 		{href}
 		bind:this={element}
 		use:useActions={use}
-		use:forwardEvents
 		class:compact
 		class:uppercase
 		class={cx(className, classes.root, getStyles({ css: override, variation: variant, disabled }), {
@@ -124,7 +119,6 @@ A user can perform an immediate action by pressing a button. It's frequently use
 	<button
 		bind:this={element}
 		use:useActions={use}
-		use:forwardEvents
 		class={cx(className, classes.root, getStyles({ css: override, variation: variant }), {
 			[classes.disabled]: disabled,
 			[classes.loading]: loading

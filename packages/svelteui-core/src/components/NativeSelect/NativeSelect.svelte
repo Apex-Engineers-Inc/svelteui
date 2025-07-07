@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { randomID } from '$lib/styles';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import Input from '../Input/Input.svelte';
 	import InputWrapper from '../InputWrapper/InputWrapper.svelte';
 	import ChevronUpDown from './ChevronUpDown.svelte';
@@ -47,9 +46,6 @@
 			typeof item === 'string' ? { label: item, value: item } : item
 		));
 
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
-
 	/** When no icon is present give the left section 12px of padding*/
 	const base = { '& .input': { paddingLeft: 12 } };
 </script>
@@ -87,7 +83,7 @@ Capture user feedback limited to large set of options
 >
 	<Input
 		bind:element
-		use={[forwardEvents, [useActions, use]]}
+		use={[[useActions, use]]}
 		bind:value
 		root="select"
 		id={uuid}

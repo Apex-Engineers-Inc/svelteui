@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { Box } from '../Box';
 	import { Skeleton } from '../Skeleton';
 	import { Text } from '../Text';
@@ -24,8 +23,6 @@
 		usePlaceholder: $$Props['usePlaceholder'] = false,
 		loader: $$Props['loader'] = false;
 	export { className as class };
-
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	let loaded: boolean = false;
 	let error: boolean = false;
@@ -58,7 +55,6 @@ Dynamic Image component with optional placeholder for loading and error state
 				<img
 					bind:this={element}
 					use:useActions={use}
-					use:forwardEvents
 					class={classes.image}
 					{src}
 					{alt}

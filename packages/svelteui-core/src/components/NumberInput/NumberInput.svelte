@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import { TextInput } from '../TextInput';
 	import useStyles from './NumberInput.styles';
 	import { defaultFormatter, defaultParser } from './utils';
@@ -56,7 +55,6 @@
 	}
 
 	const dispatch = createEventDispatcher();
-	const forwardEvents = createEventForwarder(get_current_component(), ['change']);
 
 	let isKeyDown = false;
 	let stepCount = 0;
@@ -217,7 +215,7 @@ values and add custom parsers and formatters.
 	on:keyup={onKeyUp}
 	on:keydown={onKeyDown}
 	on:blur={onBlur}
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 >
 	<slot slot="icon" name="icon" />
 	<div

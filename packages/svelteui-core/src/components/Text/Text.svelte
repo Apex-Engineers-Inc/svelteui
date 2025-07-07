@@ -1,6 +1,5 @@
 <script lang="ts">
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import Error from '$lib/internal/errors/Error.svelte';
 	import { Box } from '../Box';
 	import useStyles from './Text.styles';
@@ -28,9 +27,6 @@
 		href: $$Props['href'] = '',
 		tracking: $$Props['tracking'] = 'normal';
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	// --------------Error Handling-------------------
 	let observable: boolean = false;
@@ -86,7 +82,7 @@ Display text and links with theme styles.
 <Box
 	{root}
 	bind:element
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	class={cx(className, classes.root, getStyles({ css: override }))}
 	href={href ?? undefined}
 	{...$$restProps}

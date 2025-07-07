@@ -1,8 +1,7 @@
 <script lang="ts">
 	import useStyles from './Checkbox.styles';
 	import { randomID } from '$lib/styles';
-	import { get_current_component } from 'svelte/internal';
-	import { createEventForwarder, useActions } from '$lib/internal';
+	import { useActions } from '$lib/internal';
 	import Box from '../Box/Box.svelte';
 	import ThemeIcon from '../ThemeIcon/ThemeIcon.svelte';
 	import CheckboxIcon from './CheckboxIcon.svelte';
@@ -27,9 +26,6 @@
 		required: $$Props['required'] = false,
 		transitionDuration: $$Props['transitionDuration'] = 100;
 	export { className as class };
-
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
 
 	$: checked = indeterminate || checked;
 	$: ({ cx, classes, getStyles } = useStyles(
@@ -61,7 +57,6 @@ A checkbox input component using the theme styles with support for a label and i
 	<div class={classes.inner}>
 		<input
 			use:useActions={use}
-			use:forwardEvents
 			bind:checked
 			class={classes.input}
 			class:disabled

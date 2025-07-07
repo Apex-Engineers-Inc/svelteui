@@ -1,8 +1,7 @@
 <script lang="ts">
 	import useStyles from './UnstyledButton.styles';
 	import { Box } from '../../Box';
-	import { createEventForwarder, useActions } from '$lib/internal';
-	import { get_current_component } from 'svelte/internal';
+	import { useActions } from '$lib/internal';
 	import type { UnstyledButtonProps as $$UnstyledButtonProps } from './UnstyledButton';
 
 	interface $$Props extends $$UnstyledButtonProps {}
@@ -14,15 +13,12 @@
 		root: $$Props['root'] = 'button';
 	export { className as class };
 
-	/** An action that forwards inner dom node events from parent component */
-	const forwardEvents = createEventForwarder(get_current_component());
-
 	$: ({ cx, classes, getStyles } = useStyles(null, { name: 'UnstyledButton' }));
 </script>
 
 <Box
 	bind:element
-	use={[forwardEvents, [useActions, use]]}
+	use={[[useActions, use]]}
 	class={cx(className, classes.root, getStyles({ css: override }))}
 	{root}
 	{...$$restProps}
