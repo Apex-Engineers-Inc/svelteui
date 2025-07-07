@@ -21,6 +21,7 @@
 		"packages/*",
 		"configuration/*"
 	],
+	"packageManager": "npm@11.3.0",
 	"scripts": {
 		"build:docs": "npm run --workspace=svelteui-docs build",
 		"build:storybook": "cd packages/svelteui-core && npx storybook build -c ../../configuration/storybook",
