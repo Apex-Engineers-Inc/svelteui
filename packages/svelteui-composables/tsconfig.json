@@ -14,7 +14,6 @@
 		"lib": ["es2020", "DOM"],
 		"target": "es2020",
 		"isolatedModules": true,
-		"baseUrl": ".",
 		"paths": {
 			"$lib": ["src"],
 			"$lib/*": ["src/*"],
