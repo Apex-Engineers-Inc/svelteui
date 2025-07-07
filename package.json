@@ -38,7 +38,7 @@
 		"dev": "npm run storybook",
 		"dev:docs": "npm run package && npm run --workspace=svelteui-docs dev",
 		"format": "prettier --write --ignore-unknown ./package.json configuration apps && turbo run format --parallel",
-		"postinstall": "npx patch-package",
+		"postinstall": "npx patch-package && npm run package",
 		"lint": "turbo run lint --parallel",
 		"package": "npm run clean && turbo run package --parallel",
 		"pre-commit": "lint-staged",
@@ -60,6 +60,9 @@
 	"lint-staged": {
 		"*": "prettier --write --ignore-unknown",
 		"*.{js,ts,svelte}": "eslint --fix"
+	},
+	"dependencies": {
+		"turbo": "latest"
 	},
 	"devDependencies": {
 		"@rollup/plugin-replace": "5.0.2",
@@ -86,7 +89,6 @@
 		"storybook": "7.0.11",
 		"storybook-dark-mode": "3.0.0",
 		"syncpack": "8.2.4",
-		"turbo": "latest",
 		"vitest": "0.31.0"
 	}
 }
