@@ -40,7 +40,7 @@
 		"format": "prettier --write --ignore-unknown ./package.json configuration apps && turbo run format --parallel",
 		"postinstall": "npx patch-package && npm run package",
 		"lint": "turbo run lint --parallel",
-		"package": "npm run clean && turbo run package --parallel",
+		"package": "turbo run package --parallel",
 		"pre-commit": "lint-staged",
 		"prepare": "husky install",
 		"prepare:release": "npm run prepush && npm run package",
