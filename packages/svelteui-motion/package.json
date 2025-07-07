@@ -86,6 +86,6 @@
 		"vite": "4.3.5"
 	},
 	"peerDependencies": {
-		"svelte": ">=3.55.0"
+		"svelte": ">=5.0.0"
 	}
 }
